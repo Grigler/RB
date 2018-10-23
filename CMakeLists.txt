@@ -11,10 +11,18 @@ endif()
 
 include_directories(${CONTRIB}/include)
 
+include_directories(${PROJECT_SOURCE_DIR}/include/rb)
+
+#allows use of quaternions
+add_definitions(-DGLM_ENABLE_EXPERIMENTAL)
 
 #-----------------Library-----------------
 add_library(rb STATIC
-  src/rb/rb.cpp
+  include/rb/World.h
+  include/rb/Body.h
+  
+  src/rb/World.cpp
+  src/rb/Body.cpp
 )
 
 
