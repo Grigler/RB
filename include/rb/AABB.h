@@ -3,12 +3,20 @@
 
 #include <glm/vec3.hpp>
 #include <glm/mat3x3.hpp>
+#include <memory>
 
 namespace RB
 {
   class AABB
   {
     friend class Body;
+    friend class BVH;
+  public:
+    //Doesn't parent to anything
+    AABB(glm::vec3 _min, glm::vec3 _max);
+    //Derives bounds from given parent
+    AABB(std::weak_ptr<Body> _parent);
+
   private:
     //Initialised and never changed - used to orient
     glm::vec3 localMin = glm::vec3(0.0f);
@@ -21,6 +29,10 @@ namespace RB
 
     void CheckAgainst(AABB _other);
     static void Check(AABB _l, AABB _r);
+
+    std::weak_ptr<Body> parent;
+    //Informs the BVH that this BV can exist with a single use_count
+    bool isVirtual = false;
   };
 }
 

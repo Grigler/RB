@@ -35,7 +35,8 @@ namespace RB
 
   private:
 
-    std::unique_ptr<AABB> boundingBox;
+    std::shared_ptr<AABB> boundingBox;
+    std::weak_ptr<Body> selfRef;
 
   };
 

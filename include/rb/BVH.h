@@ -1,0 +1,40 @@
+#ifndef BVH_H_
+#define BVH_H_
+
+#include <memory>
+#include <vector>
+#include <list>
+
+#include "AABB.h"
+
+namespace RB
+{
+  struct BVHNode
+  {
+    friend class BVH;
+  private:
+    std::unique_ptr<BVHNode> left;
+    std::unique_ptr<BVHNode> right;
+    std::weak_ptr<AABB> bv;
+
+
+  };
+
+  class BVH
+  {
+  public:
+    BVH();
+
+    void Tick();
+
+    void BuildFrom(std::vector< std::weak_ptr<AABB> > _allBVs);
+
+  private:
+    std::unique_ptr<BVHNode> root;
+    //Using list instead of vector to avoid issues with resizing
+    std::list< std::shared_ptr<AABB> > bvs;
+
+    void Prune();
+  };
+}
+#endif

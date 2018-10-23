@@ -24,10 +24,12 @@ add_library(rb STATIC
   include/rb/World.h
   include/rb/Body.h
   include/rb/AABB.h
+  include/rb/BVH.h
 
   src/rb/World.cpp
   src/rb/Body.cpp
   src/rb/AABB.cpp
+  src/rb/BVH.cpp
 )
 
 
