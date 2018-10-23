@@ -43,6 +43,8 @@ target_link_libraries(example rb)
 enable_testing()
 
 add_executable(tests
+  include/rb/RB.h
+
 	src/tests/main.cpp
 )
 
