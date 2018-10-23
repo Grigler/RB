@@ -16,6 +16,8 @@ include_directories(${PROJECT_SOURCE_DIR}/include/rb)
 #allows use of quaternions
 add_definitions(-DGLM_ENABLE_EXPERIMENTAL)
 
+set(CMAKE_CXX_STANDARD 17)
+
 #-----------------Library-----------------
 add_library(rb STATIC
   include/rb/World.h
