@@ -1,4 +1,7 @@
-sudo: true
+os: linux
+dist: trusty
+
+sudo: require
 
 language: cpp
 
@@ -6,7 +9,13 @@ addons:
         apt:
                 sources: ubuntu-toolchain-r-test
 
-before_install: pip install --user cpp-coveralls
+before_install: 
+        - pip install --user cpp-coveralls
+        - sudo apt-add-repository --yes ppa:beineri/opt-qt551-trust && sudo apt-get update -qq && sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test && sudo apt-get update -qq
+        - git clone https://github.com/google/googletest && cd googletest && mkdir build && cd build && cmake -DBUILD_GMOCK=OFF .. && make -j2 && sudo make install
+
+install:
+        git clone https://github.com/g-truc/glm && sudo cp -r glm/glm /usr/local/include && brew install qt5
 
 script:
         - mkdir build
