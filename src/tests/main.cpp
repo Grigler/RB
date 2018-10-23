@@ -1,16 +1,30 @@
 #include "gtest/gtest.h"
 
+#include <RB.h>
 
-int foo(int _a, int _b)
+TEST(World, AddBody)
 {
-  return _a*_b;
+  RB::World w;
+  std::weak_ptr<RB::Body> b = w.AddBody();
+  ASSERT_FALSE(b.expired());
+}
+TEST(World, KillAllBodies)
+{
+  RB::World w;
+  std::weak_ptr<RB::Body> b = w.AddBody();
+  EXPECT_FALSE(b.expired());
+  w.Kill();
+  ASSERT_TRUE(b.expired());
 }
 
-TEST(TestingTheTests, DoesNothing)
+TEST(Body, DefaultAtOrigin)
 {
-  EXPECT_EQ(foo(10,10),100);
-  ASSERT_EQ(foo(999,0),0);
+  RB::World w;
+  std::weak_ptr<RB::Body> b = w.AddBody();
+  EXPECT_FALSE(b.expired());
+  ASSERT_EQ(b.lock()->getPosition4(), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 }
+
 int main(int argc, char **argv)
 {
   ::testing::InitGoogleTest(&argc, argv);

@@ -14,8 +14,10 @@ namespace RB
     void Tick();
     void Kill();
     
+    std::weak_ptr<Body> AddBody();
+
   private:
-    std::list< std::unique_ptr<Body> > bodies;
+    std::list< std::shared_ptr<Body> > bodies;
 
   };
 

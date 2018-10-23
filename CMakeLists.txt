@@ -20,9 +20,11 @@ add_definitions(-DGLM_ENABLE_EXPERIMENTAL)
 add_library(rb STATIC
   include/rb/World.h
   include/rb/Body.h
-  
+  include/rb/AABB.h
+
   src/rb/World.cpp
   src/rb/Body.cpp
+  src/rb/AABB.cpp
 )
 
 
