@@ -6,12 +6,13 @@ set(CONTRIB ${PROJECT_SOURCE_DIR}/contrib)
 if(WIN32)
   link_directories(${CONTRIB}/lib)
 else()
-
+  include_directories(/usr/include/)
 endif()
 
 include_directories(${CONTRIB}/include)
 
 include_directories(${PROJECT_SOURCE_DIR}/include/rb)
+include_directories(${PROJECT_SOURCE_DIR}/include)
 
 #allows use of quaternions
 add_definitions(-DGLM_ENABLE_EXPERIMENTAL)
