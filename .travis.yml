@@ -18,7 +18,7 @@ install:
         git clone https://github.com/g-truc/glm && sudo cp -r glm/glm /usr/local/include && sudo apt-get install -qq g++-7 && sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 90
 
 script:
-        - cd ../..
+        - cd /home/travis/build/Grigler/RB
         - mkdir build
         - cd build
         - cmake ..
