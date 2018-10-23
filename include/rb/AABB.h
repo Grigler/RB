@@ -7,6 +7,8 @@
 
 namespace RB
 {
+  class Body;
+
   class AABB
   {
     friend class Body;
