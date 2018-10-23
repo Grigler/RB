@@ -17,7 +17,6 @@ build/*
 # Compiled Dynamic libraries
 *.so
 *.dylib
-*.dll
 
 # Fortran module files
 *.mod
@@ -33,4 +32,3 @@ build/*
 *.exe
 *.out
 *.app
->>>>>>> 6d4ad62e473cb2314bc117a34b06389394bcb210

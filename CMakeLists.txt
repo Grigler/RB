@@ -27,8 +27,12 @@ target_link_libraries(example rb)
 
 
 #------------------Tests------------------
+enable_testing()
+
 add_executable(tests
 	src/tests/main.cpp
 )
 
 target_link_libraries(tests rb gtest)
+
+add_test(AllTests tests)
