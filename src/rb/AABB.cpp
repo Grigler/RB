@@ -11,8 +11,6 @@ AABB::AABB(glm::vec3 _min, glm::vec3 _max)
 {
   localMin = _min; localMax = _max;
   worldMin = _min; worldMax = _max;
-  
-  isVirtual = true;
 }
 //Derives bounds from parent
 AABB::AABB(std::weak_ptr<Body> _parent)

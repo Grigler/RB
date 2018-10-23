@@ -33,8 +33,6 @@ namespace RB
     static void Check(AABB _l, AABB _r);
 
     std::weak_ptr<Body> parent;
-    //Informs the BVH that this BV can exist with a single use_count
-    bool isVirtual = false;
   };
 }
 

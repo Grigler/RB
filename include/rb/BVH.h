@@ -13,11 +13,9 @@ namespace RB
   {
     friend class BVH;
   private:
-    std::unique_ptr<BVHNode> left;
-    std::unique_ptr<BVHNode> right;
+    std::shared_ptr<BVHNode> left;
+    std::shared_ptr<BVHNode> right;
     std::weak_ptr<AABB> bv;
-
-
   };
 
   class BVH
@@ -25,16 +23,16 @@ namespace RB
   public:
     BVH();
 
-    void Tick();
-
-    void BuildFrom(std::vector< std::weak_ptr<AABB> > _allBVs);
+    //Prunes BVs and then builds tree
+    void Rebuild();
 
   private:
-    std::unique_ptr<BVHNode> root;
+    std::shared_ptr<BVHNode> root;
     //Using list instead of vector to avoid issues with resizing
     std::list< std::shared_ptr<AABB> > bvs;
 
-    void Prune();
+    void RecurseBuild(std::weak_ptr<BVHNode> _curr,
+      std::list< std::shared_ptr<AABB> > &_bvs);
   };
 }
 #endif

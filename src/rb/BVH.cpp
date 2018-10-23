@@ -1,5 +1,7 @@
 #include "BVH.h"
 
+#include <algorithm>
+
 #include <glm/glm.hpp>
 
 using namespace RB;
@@ -9,35 +11,107 @@ BVH::BVH()
   root = std::make_unique<BVHNode>();
 }
 
-void BVH::Tick()
+void BVH::Rebuild()
 {
-  Prune();
-}
+  //Init with most opposite values so for easy initial value
+  glm::vec3 min = glm::vec3(std::numeric_limits<float>().max());
+  glm::vec3 max = glm::vec3(std::numeric_limits<float>().min());
 
-void BVH::BuildFrom(std::vector< std::weak_ptr<AABB> > _allBVs)
-{
-  //Anything is smaller than max and vice-verca - good initial vals
-  glm::vec3 allMin = glm::vec3(std::numeric_limits<float>().max());
-  glm::vec3 allMax = glm::vec3(std::numeric_limits<float>().min());
-
-  for (auto i = _allBVs.begin(); i != _allBVs.end(); i++)
-  {
-    allMin = glm::min(allMin, i->lock()->worldMin);
-    allMax = glm::max(allMax, i->lock()->worldMax);
-  }
-
-}
-
-void BVH::Prune()
-{
+  //Pruning the tree at the same time as finding the extents
+  //reduces overhead in iterating through dynamic memory
   for (auto i = bvs.begin(); i != bvs.end(); i++)
   {
-    //Single use_count and no isVirtual flag implies that it belonged
-    //to body that no longer exists within the system
-    if (i->use_count() == 1 && !(*i)->isVirtual)
+    //Removes all virtual AABBs as they will be re-generated
+    if (i->use_count() == 1)
     {
       bvs.erase(i);
       i--;
     }
+    else
+    {
+      min = glm::min(min, (*i)->worldMin);
+      max = glm::max(max, (*i)->worldMax);
+    }
   }
+
+  //Potentially expensive call - necessary without ability to insert nodes
+  root.reset();
+
+  //Adding largest BV to bvs
+  std::shared_ptr<AABB> lrg = std::make_shared<AABB>(min, max);
+  bvs.push_back(lrg);
+
+  //Making new tree
+  root = std::make_unique<BVHNode>();
+  root->bv = lrg;
+  
+  //Making copy of list for bvs for building - DIRT AND EXPENSIVE
+  std::list < std::shared_ptr<AABB> > tempBVS(bvs);
+  RecurseBuild(root, tempBVS);
+
+}
+
+void BVH::RecurseBuild(std::weak_ptr<BVHNode> _curr,
+  std::list< std::shared_ptr<AABB> > &_bvs)
+{
+  //Root has bv already - so only do this for other nodes
+  if (_curr.lock()->bv.expired())
+  {
+    //Must be the lowest node
+    if (_bvs.size() == 1)
+    {
+      //Explicit conversion not 100% necessary
+      _curr.lock()->bv = std::weak_ptr<AABB>(_bvs.front());
+    }
+    else
+    {
+      glm::vec3 min = glm::vec3(std::numeric_limits<float>().max());
+      glm::vec3 max = glm::vec3(std::numeric_limits<float>().min());
+      for (auto i = _bvs.begin(); i != _bvs.end(); i++)
+      {
+        min = glm::min(min, (*i)->worldMin);
+        max = glm::max(max, (*i)->worldMax);
+      }
+      _curr.lock()->bv = std::make_shared<AABB>(min, max);
+    }
+  }
+
+  //Find largest axis in current BV
+  glm::vec3 axisVector = _curr.lock()->bv.lock()->worldMax -
+    _curr.lock()->bv.lock()->worldMin;
+  //Storing indx of vector to access for longest axis
+  int longestAxisIndx = 0;
+  if (axisVector.x > axisVector.y && axisVector.x > axisVector.z)
+  {
+    longestAxisIndx = 0;
+  }
+  else if (axisVector.y > axisVector.x && axisVector.y > axisVector.z)
+  {
+    longestAxisIndx = 1;
+  }
+  else
+  {
+    longestAxisIndx = 2;
+  }
+
+  //Find splitting point along this axis
+  float splitVal = axisVector[longestAxisIndx] / 2.0f;
+
+  //Create local list of these bvs and send into left & right
+  std::list< std::shared_ptr<AABB> > lList;
+  std::list< std::shared_ptr<AABB> > rList;
+  for (auto i = _bvs.begin(); i != _bvs.end(); i++)
+  {
+    if ((*i)->worldMin[longestAxisIndx] < splitVal)
+    {
+      lList.push_back((*i));
+    }
+    else
+    {
+      rList.push_back((*i));
+    }
+  }
+
+  RecurseBuild(_curr.lock()->left, lList);
+  RecurseBuild(_curr.lock()->right, rList);
 }
