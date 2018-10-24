@@ -44,8 +44,9 @@ target_link_libraries(example rb)
 #------------------Tests------------------
 enable_testing()
 
+include_directories{${PROJECT_SOURCE_DIR}/include}
+
 add_executable(tests
-  include/rb/RB.h
 
 	src/tests/main.cpp
 )

@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "RB.h"
+#include "rb/RB.h"
 
 TEST(World, AddBody)
 {
