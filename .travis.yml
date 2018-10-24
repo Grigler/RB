@@ -33,8 +33,6 @@ script:
   - cmake -H. -Bbuild
   - cd build
   - cmake --build .
-
-script:
   - ./bin/tests
 
 after_success:
