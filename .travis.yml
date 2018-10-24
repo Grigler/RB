@@ -34,5 +34,8 @@ script:
   - cd build
   - cmake --build .
 
-after_success:
+script:
   - ./bin/tests
+
+after_success:
+  - coveralls --root .. -E ".*external.*" -E ".*CMakeFiles.*" -E ".*test/.*.cpp.*"
