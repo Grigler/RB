@@ -30,7 +30,8 @@ install:
 #        - cmake --build .
 #        - ctest
 
-script: 
+script:
+  - cd /home/travis/build/Grigler/RB
   - cmake -H. -Bbuild
   - cd build
   - cmake --build .
