@@ -36,4 +36,4 @@ script:
   - ./bin/tests
 
 after_success:
-  - coveralls --root .. --exclude contrib --exclude build --exclude glm --exclude src/example --extension cpp --extension h
+  - coveralls --build-root build --gcov-options '\lp' -e build/googletest -e contrib -e src/example
