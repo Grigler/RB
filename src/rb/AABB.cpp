@@ -25,13 +25,13 @@ void AABB::Update(glm::mat3 _bodyOrientation)
 }
 
 //TODO
-void AABB::CheckAgainst(AABB _other)
+bool AABB::CheckAgainst(AABB _other)
 {
 
-
+  return false;
 }
-void AABB::Check(AABB _l, AABB _r)
+bool AABB::Check(AABB _l, AABB _r)
 {
 
-
+  return false;
 }

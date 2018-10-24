@@ -29,8 +29,8 @@ namespace RB
 
     void Update(glm::mat3 _bodyOrientation);
 
-    void CheckAgainst(AABB _other);
-    static void Check(AABB _l, AABB _r);
+    bool CheckAgainst(AABB _other);
+    static bool Check(AABB _l, AABB _r);
 
     std::weak_ptr<Body> parent;
   };
