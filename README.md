@@ -1,4 +1,6 @@
-# RB [![Build Status](https://travis-ci.com/Grigler/RB.svg?branch=master)](https://travis-ci.com/Grigler/RB)
+[![Build Status](https://travis-ci.com/Grigler/RB.svg?branch=master)](https://travis-ci.com/Grigler/RB)
+
+# RB
 RigidBody physics implemented with NGL, and TravisCI with gtest
 
 # Test Cases 
@@ -38,6 +40,10 @@ RigidBody physics implemented with NGL, and TravisCI with gtest
       - Clearing tree results in no invalidated AABB ptrs in body
       - Killing bodies results in invalidated ptrs in BVH
       - Attempting known pass-case AABB test with arbitrary sized trees
+<<<<<<< HEAD
       - Attempting known fail-case AABB test with arbitrary sized trees
       - Testing Collision against Body's own AABB
    
+=======
+   
+>>>>>>> 96264d9237dd37f9793ec6d6ad8f909670609b1a
