@@ -9,10 +9,10 @@ else()
   include_directories(/usr/include/)
 endif()
 
-include_directories(${CONTRIB}/include)
+#include_directories(${CONTRIB}/include)
 
-include_directories(${PROJECT_SOURCE_DIR}/include/rb)
-include_directories(${PROJECT_SOURCE_DIR}/include)
+#include_directories(${PROJECT_SOURCE_DIR}/include/rb)
+#include_directories(${PROJECT_SOURCE_DIR}/include)
 
 #allows use of quaternions
 add_definitions(-DGLM_ENABLE_EXPERIMENTAL)
@@ -32,6 +32,11 @@ add_library(rb STATIC
   src/rb/BVH.cpp
 )
 
+
+target_include_directories(rb PUBLIC
+  ${CONTRIB}/include
+  ${PROJECT_SOURCE_DIR}/include/rb
+)
 
 #-----------------Example-----------------
 add_executable(example
@@ -53,7 +58,7 @@ add_executable(tests
 
 	src/tests/main.cpp
 )
-
+target_include_directories(tests PUBLIC ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(tests rb gtest)
 
 add_test(AllTests tests)
