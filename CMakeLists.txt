@@ -7,7 +7,21 @@ if(WIN32)
   link_directories(${CONTRIB}/lib)
 else()
   include_directories(/usr/include/)
+  
+  if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+  endif()
+
+  set(CMAKE_CXX_FLAGS "-Wall -Wextra")
+  set(CMAKE_CXX_FLAGS_DEBUG "-g")
+  set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+  
 endif()
+
+include(GNUInstallDirs)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
 
 #include_directories(${CONTRIB}/include)
 
@@ -49,19 +63,23 @@ target_link_libraries(example rb)
 #------------------Tests------------------
 enable_testing()
 
-get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
-foreach(dir ${dirs})
-  message(STATUS "dir='${dir}'")
-endforeach()
+#Forces gtest to link to C runtime libraries statically
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+include(cmake/googletest.cmake)
+fetch_googletest(
+    ${PROJECT_SOURCE_DIR}/cmake
+    ${PROJECT_BINARY_DIR}/googletest
+)
 
 add_executable(tests
 
 	src/tests/main.cpp
 )
 target_include_directories(tests PUBLIC
-  ${CONTRIB}/include
+  #${CONTRIB}/include
   ${PROJECT_SOURCE_DIR}/include
 )
-target_link_libraries(tests rb gtest)
+target_link_libraries(tests rb gtest_main)
 
 add_test(AllTests tests)
