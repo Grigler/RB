@@ -36,4 +36,4 @@ script:
   - ./bin/tests
 
 after_success:
-  - coveralls --root .. --exclude contrib --exclude build --exclude glm
+  - coveralls --root .. --exclude contrib --exclude build --exclude glm --exclude src/example --extension cpp --extension h
