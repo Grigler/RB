@@ -5,6 +5,10 @@ sudo: require
 
 language: cpp
 
+compiler:
+  - clang
+  - gcc
+
 addons:
         apt:
                 sources: ubuntu-toolchain-r-test

@@ -44,7 +44,10 @@ target_link_libraries(example rb)
 #------------------Tests------------------
 enable_testing()
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
+get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
+foreach(dir ${dirs})
+  message(STATUS "dir='${dir}'")
+endforeach()
 
 add_executable(tests
 
