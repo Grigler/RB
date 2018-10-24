@@ -21,7 +21,7 @@ addons:
 jobs:
   include:
     - stage: "Dependency Installation"
-      script:
+      install:
         - pip install --user cpp-coveralls
         - sudo apt-add-repository --yes ppa:beineri/opt-qt551-trusty && sudo apt-get update -qq && sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test && sudo apt-get update -qq
         - git clone https://github.com/google/googletest && cd googletest && mkdir build && cd build && cmake -DBUILD_GMOCK=OFF .. && make -j2 && sudo make install
@@ -33,5 +33,5 @@ jobs:
         - cd build
         - cmake --build .
     - stage: "Tests"
-      script:
+      after_success:
         - ./bin/tests
