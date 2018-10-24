@@ -36,4 +36,4 @@ script:
   - ./bin/tests
 
 after_success:
-  - coveralls --root .. -E ".*external.*" -E ".*CMakeFiles.*" -E ".*test/.*.cpp.*"
+  - coveralls --root .. --exclude contrib --exclude build --exclude glm
