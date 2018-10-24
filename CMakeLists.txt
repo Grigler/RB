@@ -58,7 +58,10 @@ add_executable(tests
 
 	src/tests/main.cpp
 )
-target_include_directories(tests PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(tests PUBLIC
+  ${CONTRIB}/include
+  ${PROJECT_SOURCE_DIR}/include
+)
 target_link_libraries(tests rb gtest)
 
 add_test(AllTests tests)
