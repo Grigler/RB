@@ -20,12 +20,13 @@ addons:
 
 
 before_install:
-  - git clone https://github.com/g-truc/glm && sudo cp -r glm/glm /usr/local/include && sudo apt-get install -qq g++-7 && sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 90
-
-install:
   - pip install --user cpp-coveralls
   - sudo apt-add-repository --yes ppa:beineri/opt-qt551-trusty && sudo apt-get update -qq && sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test && sudo apt-get update -qq
-  - git clone https://github.com/google/googletest && cd googletest && mkdir build && cd build && cmake -DBUILD_GMOCK=OFF .. && make -j2 && sudo make install
+  - git clone https://github.com/g-truc/glm && sudo cp -r glm/glm /usr/local/include && sudo apt-get install -qq g++-7 && sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 90
+
+#install:
+#
+#  - git clone https://github.com/google/googletest && cd googletest && mkdir build && cd build && cmake -DBUILD_GMOCK=OFF .. && make -j2 && sudo make install
 
 script:
   - cd /home/travis/build/Grigler/RB
