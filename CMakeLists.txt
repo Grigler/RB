@@ -44,7 +44,7 @@ target_link_libraries(example rb)
 #------------------Tests------------------
 enable_testing()
 
-include_directories{${PROJECT_SOURCE_DIR}/include}
+include_directories(${PROJECT_SOURCE_DIR}/include)
 
 add_executable(tests
 
