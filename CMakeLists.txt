@@ -82,4 +82,4 @@ target_include_directories(tests PUBLIC
 )
 target_link_libraries(tests rb gtest_main)
 
-add_test(AllTests tests)
+add_test(AllTests ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests)
