@@ -1,4 +1,6 @@
-# RB [![Build Status](https://travis-ci.com/Grigler/RB.svg?branch=master)](https://travis-ci.com/Grigler/RB)
+[![Build Status](https://travis-ci.com/Grigler/RB.svg?branch=master)](https://travis-ci.com/Grigler/RB)
+
+# RB
 RigidBody physics implemented with NGL, and TravisCI with gtest
 
 # Test Cases 
