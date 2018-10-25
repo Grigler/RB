@@ -37,11 +37,11 @@ script:
   - cmake -H. -Bbuild
   - cd build
   - cmake --build .
-  - make check
-  #- ./bin/tests
+  #- make check
+  - ./bin/tests
 
 after_success:
-  - lcov --compat-libtool --directory . --caputure --output-file coverage.info --remove '/usr/include/*' '/usr/lib/*' '/usr/local/*' '.*/contrib/*' '.*/src/example/*' '.*/CMakeFiles/*'
+  - lcov --compat-libtool --directory . --caputure --output-file coverage.info --remove '/usr/include/*' '/usr/*' '.*/contrib/*' '.*/src/example/*' '.*/CMakeFiles/*' '.*/googletest/*'
   - coveralls-lcov coverage.info
   #- coveralls --root .. --verbose --gcov-options '\lpw' -e build/googletest -e contrib -e src/example -e src/tests -e build/CMakeFiles -e glm
   #- coveralls --root .. --verbose -e build/googletest -e contrib -e src/example -e src/tests -e build/CMakeFiles -e glm
