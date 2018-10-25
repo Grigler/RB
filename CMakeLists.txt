@@ -66,6 +66,11 @@ fetch_googletest(
     ${PROJECT_BINARY_DIR}/googletest
 )
 
+if(NOT WIN32)
+  #Just testing
+  set(CMAKE_CXX_FLAGS "-g -O0 -Wall --coverage")
+endif()
+
 add_executable(tests
 
 	src/tests/main.cpp
