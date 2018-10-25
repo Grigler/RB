@@ -19,6 +19,8 @@ namespace RB
     //Derives bounds from given parent
     AABB(std::weak_ptr<Body> _parent);
 
+    static bool Check(AABB _l, AABB _r);
+
   private:
     //Initialised and never changed - used to orient
     glm::vec3 localMin = glm::vec3(0.0f);
@@ -30,7 +32,6 @@ namespace RB
     void Update(glm::mat3 _bodyOrientation);
 
     bool CheckAgainst(AABB _other);
-    static bool Check(AABB _l, AABB _r);
 
     std::weak_ptr<Body> parent;
   };

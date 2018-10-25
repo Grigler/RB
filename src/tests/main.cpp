@@ -45,21 +45,30 @@ TEST(BodyBehaviour, DefaultAtOrigin)
 //AABB Behaviour
 TEST(aabbBehaviour, PassCaseGeneric)
 {
-  //Defining two AABBs within reasonable numeric distance
-  //that _should_ pass (i.e., within 1 unit and a size of 2)
+  RB::AABB l(glm::vec3(-1.0f), glm::vec3(1.0f));
+  RB::AABB r(glm::vec3(-0.5f), glm::vec3(0.5f));
+  ASSERT_TRUE(RB::AABB::Check(l, r));
+
 }
 TEST(aabbBehaviour, FailCaseGeneric)
 {
-  //Defining two AABBs at distance from eachother
+  RB::AABB l(glm::vec3(-100.0f), glm::vec3(-99.0f));
+  RB::AABB r(glm::vec3(99.0f), glm::vec3(100.0f));
+  ASSERT_FALSE(RB::AABB::Check(l, r));
 }
 TEST(aabbBehaviour, IdenticalAABB)
 {
   //Declaring two identical AABBs and testing
+  RB::AABB i(glm::vec3(-1.0f), glm::vec3(1.0f));
+  ASSERT_TRUE(RB::AABB::Check(i, i));
 }
 TEST(aabbBehaviour, CloselyPassingAABB)
 {
   //Defining two AABBs that are passing within
   //some arbitrarily close distance (0.0...0001f)
+  RB::AABB l(glm::vec3(0.0f), glm::vec3(1.0f));
+  RB::AABB r(glm::vec3(1.000000001f), glm::vec3(2.0f));
+  ASSERT_FALSE(RB::AABB::Check(l, r));
 }
 TEST(aabbBehaviour, IdenticalAfterFullRotations)
 {
