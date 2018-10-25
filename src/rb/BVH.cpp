@@ -98,7 +98,10 @@ void BVH::RecurseBuild(std::weak_ptr<BVHNode> _curr,
       _curr.lock()->bv = std::make_shared<AABB>(min, max);
     }
   }
-
+  else
+  {
+    return;
+  }
   //Find largest axis in current BV
   glm::vec3 axisVector = _curr.lock()->bv.lock()->worldMax -
     _curr.lock()->bv.lock()->worldMin;
