@@ -45,7 +45,7 @@ script:
 
 after_success:
   - lcov --directory . --capture --output-file coverage.info --
-  - lcov --remove coverage.info '/usr/include/*' '/home/travis/build/Grigler/RB/contrib/*' '/home/travis/build/Grigler/RB/src/example/*' '/home/travis/build/Grigler/RB/src/tests/*''.*/CMakeFiles/*' '/home/travis/build/Grigler/RB/build/*'
+  - lcov --remove coverage.info '/usr/include/*' '/home/travis/build/Grigler/RB/contrib/*' '/home/travis/build/Grigler/RB/src/example/*' '/home/travis/build/Grigler/RB/src/tests/*''.*/CMakeFiles/*' '/home/travis/build/Grigler/RB/build/*' --output-file coverage.info
   - lcov --list coverage.info
   - coveralls-lcov coverage.info
   #- coveralls --root .. --verbose --gcov-options '\lpw' -e build/googletest -e contrib -e src/example -e src/tests -e build/CMakeFiles -e glm
