@@ -41,7 +41,9 @@ script:
   - ./bin/tests
 
 after_success:
-  - lcov --compat-libtool --directory . --capture --output-file coverage.info --remove '/usr/include/*' '/usr/*' '.*/contrib/*' '.*/src/example/*' '.*/CMakeFiles/*' '.*/googletest/*'
+  - lcov --directory . --capture --output-file coverage.info
+  - lcov --remove '/usr/include/*' '/usr/*' '.*/contrib/*' '.*/src/example/*' '.*/CMakeFiles/*' '.*/googletest/*'
+  - lcov --list coverage.info
   - coveralls-lcov coverage.info
   #- coveralls --root .. --verbose --gcov-options '\lpw' -e build/googletest -e contrib -e src/example -e src/tests -e build/CMakeFiles -e glm
   #- coveralls --root .. --verbose -e build/googletest -e contrib -e src/example -e src/tests -e build/CMakeFiles -e glm
