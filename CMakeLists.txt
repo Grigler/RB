@@ -8,13 +8,12 @@ if(WIN32)
 else()
   include_directories(/usr/include/)
   
-  if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release)
-  endif()
+  #if(NOT CMAKE_BUILD_TYPE)
+  #set(CMAKE_BUILD_TYPE Release)
+  #endif()
 
-  set(CMAKE_CXX_FLAGS "-Wall -Wextra")
-  #set(CMAKE_CXX_FLAGS_DEBUG "-g")
-  set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+  set(CMAKE_CXX_FLAGS "-g -O0 -Wall -fprofile-arcs -ftest-coverage")
+  #set(CMAKE_CXX_FLAGS_RELEASE "-O3")
   
 endif()
 
@@ -22,17 +21,6 @@ include(GNUInstallDirs)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
-
-#For coveralls
-if(CMAKE_CXX_COMPILER_ID MATCHES GNU)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
-endif()
-
-
-#include_directories(${CONTRIB}/include)
-
-#include_directories(${PROJECT_SOURCE_DIR}/include/rb)
-#include_directories(${PROJECT_SOURCE_DIR}/include)
 
 #allows use of quaternions
 add_definitions(-DGLM_ENABLE_EXPERIMENTAL)
@@ -59,11 +47,10 @@ target_include_directories(rb PUBLIC
 )
 
 #-----------------Example-----------------
-add_executable(example
-	src/example/main.cpp
-)
-
-target_link_libraries(example rb)
+#add_executable(example
+#	src/example/main.cpp
+#)
+#target_link_libraries(example rb)
 
 
 #------------------Tests------------------
@@ -87,5 +74,7 @@ target_include_directories(tests PUBLIC
   ${PROJECT_SOURCE_DIR}/include
 )
 target_link_libraries(tests rb gtest_main)
+
+
 
 add_test(AllTests ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests)
