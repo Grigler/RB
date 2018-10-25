@@ -2,7 +2,7 @@
 
 #include "rb/RB.h"
 
-#pragma region WorldBehaviour
+//World Behaviour
 TEST(WorldBehaviour, AddSingleBodyGetValidPtr)
 {
   RB::World w;
@@ -17,9 +17,8 @@ TEST(WorldBehaviour, WorldKillResultsInInvalidBodyPtr)
   w.Kill();
   ASSERT_TRUE(b.expired());
 }
-#pragma endregion
 
-#pragma region WorldLimits
+//World Limits
 TEST(WorldLimits, LargeBodyCount)
 {
   RB::World w;
@@ -31,9 +30,8 @@ TEST(WorldLimits, LargeBodyCount)
   }
   w.Kill();
 }
-#pragma endregion
 
-#pragma region BodyBehaviour
+//Body Behaviour
 TEST(BodyBehaviour, DefaultAtOrigin)
 {
   RB::World w;
@@ -41,12 +39,10 @@ TEST(BodyBehaviour, DefaultAtOrigin)
   EXPECT_FALSE(b.expired());
   ASSERT_EQ(b.lock()->getPosition4(), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 }
-#pragma endregion
 
-#pragma region BodyLimits
-#pragma endregion
+//Body Limits
 
-#pragma region aabbBehaviour
+//AABB Behaviour
 TEST(aabbBehaviour, PassCaseGeneric)
 {
   //Defining two AABBs within reasonable numeric distance
@@ -77,9 +73,8 @@ TEST(aabbBehaviour, IdenticalAfterFullRotations)
   //Assert that size is approximately the same (within epsilon)
 
 }
-#pragma endregion
 
-#pragma region aabbLimits
+//AABB Limits
 TEST(aabbLimits, PassCaseAtHigh)
 {
 
@@ -104,9 +99,8 @@ TEST(aabbLimits, FailCaseHighRelativeDistance)
 {
 
 }
-#pragma endregion
 
-#pragma region bvhBehaviour
+//BVH Behaviour
 TEST(bvhBehaviour, ClearTreeResultsInNoBodyDataLoss)
 {
   //Adding large amounts of bodies
@@ -141,9 +135,8 @@ TEST(bvhBehaviour, BodySelfTest)
 
   //Force test between body AABB in the tree
 }
-#pragma endregion
 
-#pragma region bvhLimits
+//BVH Limits
 TEST(bvhLimits, LargeNumberTest)
 {
   //Adding large numbers to bvh and testing for non-crash
@@ -152,7 +145,7 @@ TEST(bvhLimits, NoBodyTraversal)
 {
   //Adding no bodies to bvh and attempting to traverse
 }
-#pragma endregion
+
 
 int main(int argc, char **argv)
 {
