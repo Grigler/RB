@@ -36,4 +36,5 @@ script:
   - ./bin/tests
 
 after_success:
-  - coveralls --root .. --verbose --gcov-options '\lp' -e build/googletest -e contrib -e src/example -e src/tests -e build/CMakeFiles -e glm
+  #- coveralls --root .. --verbose --gcov-options '\lp' -e build/googletest -e contrib -e src/example -e src/tests -e build/CMakeFiles -e glm
+  - coveralls --root .. --verbose -e build/googletest -e contrib -e src/example -e src/tests -e build/CMakeFiles -e glm

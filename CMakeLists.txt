@@ -12,7 +12,8 @@ else()
   #set(CMAKE_BUILD_TYPE Release)
   #endif()
 
-  set(CMAKE_CXX_FLAGS "-g -O0 -Wall -fprofile-arcs -ftest-coverage")
+  #set(CMAKE_CXX_FLAGS "-g -O0 -Wall -fprofile-arcs -ftest-coverage")
+  set(CMAKE_CXX_FLAGS "-g -O0 -Wall --coverage")
   #set(CMAKE_CXX_FLAGS_RELEASE "-O3")
   
 endif()
