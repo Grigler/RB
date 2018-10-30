@@ -5,4 +5,7 @@
 #include "Body.h"
 #include "AABB.h"
 
+#include "IntegratorFactory.h"
+#include "ForwardEuler.h"
+
 #endif

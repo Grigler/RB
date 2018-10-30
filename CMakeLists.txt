@@ -34,11 +34,18 @@ add_library(rb STATIC
   include/rb/Body.h
   include/rb/AABB.h
   include/rb/BVH.h
+  include/rb/IntegratorFactory.h
+  
+  include/rb/Integrator.h
+  include/rb/ForwardEuler.h
 
   src/rb/World.cpp
   src/rb/Body.cpp
   src/rb/AABB.cpp
   src/rb/BVH.cpp
+  
+  src/rb/IntegratorFactory.cpp
+  src/rb/ForwardEuler.cpp
 )
 
 

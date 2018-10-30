@@ -67,7 +67,7 @@ TEST(aabbBehaviour, CloselyPassingAABB)
   //Defining two AABBs that are passing within
   //some arbitrarily close distance (0.0...0001f)
   RB::AABB l(glm::vec3(0.0f), glm::vec3(1.0f));
-  RB::AABB r(glm::vec3(1.000000001f), glm::vec3(2.0f));
+  RB::AABB r(glm::vec3(1.0f + glm::epsilon<float>()), glm::vec3(2.0f));
   ASSERT_FALSE(RB::AABB::Check(l, r));
 }
 TEST(aabbBehaviour, IdenticalAfterFullRotations)
@@ -84,36 +84,36 @@ TEST(aabbBehaviour, IdenticalAfterFullRotations)
 }
 
 //AABB Limits
-TEST(aabbLimits, PassCaseAtHigh)
+TEST(aabbLimits, PassCaseFarFromOrigin)
 {
-
+  RB::AABB l(glm::vec3(500000.0f), glm::vec3(500001.0f));
+  RB::AABB r(glm::vec3(500000.5f), glm::vec3(500001.5f));
+  ASSERT_TRUE(RB::AABB::Check(l, r));
 }
-TEST(aabbLimits, FailCaseAtHigh)
+TEST(aabbLimits, FailCaseFarFromOrigin)
 {
-
-}
-TEST(aabbLimits, PassCaseAtHighNeg)
-{
-
-}
-TEST(aabbLimits, FailCaseAtHighNeg)
-{
-
+  RB::AABB l(glm::vec3(500000.0f), glm::vec3(500001.0f));
+  RB::AABB r(glm::vec3(500002.0f), glm::vec3(500003.0f));
+  ASSERT_FALSE(RB::AABB::Check(l, r));
 }
 TEST(aabbLimits, PassCaseHighRelativeDistance)
 {
-
+  RB::AABB l(glm::vec3(-5000000.0f), glm::vec3(6000000.0f));
+  RB::AABB r(glm::vec3(5000000.0f), glm::vec3(5000001.0f));
+  ASSERT_TRUE(RB::AABB::Check(l, r));
 }
 TEST(aabbLimits, FailCaseHighRelativeDistance)
 {
-
+  RB::AABB l(glm::vec3(-5000000.0f), glm::vec3(-4999999.0f));
+  RB::AABB r(glm::vec3(5000000.0f), glm::vec3(5000001.0f));
+  ASSERT_FALSE(RB::AABB::Check(l, r));
 }
 
 //BVH Behaviour
 TEST(bvhBehaviour, ClearTreeResultsInNoBodyDataLoss)
 {
   //Adding large amounts of bodies
-  
+
   //Clearing the bvh
 
   //Checking for invalidated ptrs in bodies
@@ -153,6 +153,38 @@ TEST(bvhLimits, LargeNumberTest)
 TEST(bvhLimits, NoBodyTraversal)
 {
   //Adding no bodies to bvh and attempting to traverse
+}
+
+//IntegratorFactory
+TEST(IntegratorFactory, RegisteringIntegrator)
+{
+  RB::IntegratorFactory::registerIntegrator("ForwardEuler", RB::ForwardEuler::create);
+  std::shared_ptr<RB::Integrator> fe = RB::IntegratorFactory::getIntegrator("ForwardEuler");
+  ASSERT_NE(fe.get(), nullptr);
+  //No need for teardown as this is outside of test scope and handled in implementation
+}
+TEST(IntegratorFactory, UnregisterIntegrator)
+{
+  RB::IntegratorFactory::registerIntegrator("ForwardEuler", RB::ForwardEuler::create);
+  RB::IntegratorFactory::unregisterIntegrator("ForwardEuler", RB::ForwardEuler::create);
+  std::shared_ptr<RB::Integrator> fe = RB::IntegratorFactory::getIntegrator("ForwardEuler");
+  ASSERT_EQ(fe.get(), nullptr);
+}
+
+//ForwardEuler
+TEST(ForwardEuler, Creation)
+{
+  //Identical to IntegratorFactory::RegisterIntegrator test
+  RB::IntegratorFactory::registerIntegrator("ForwardEuler", RB::ForwardEuler::create);
+  std::shared_ptr<RB::Integrator> fe = RB::IntegratorFactory::getIntegrator("ForwardEuler");
+  ASSERT_NE(fe.get(), nullptr);
+}
+TEST(ForwardEuler, Integration)
+{
+  RB::IntegratorFactory::registerIntegrator("ForwardEuler", RB::ForwardEuler::create);
+  std::shared_ptr<RB::Integrator> fe = RB::IntegratorFactory::getIntegrator("ForwardEuler");
+  EXPECT_NE(fe.get(), nullptr);
+  fe->integratre();
 }
 
 

@@ -27,11 +27,23 @@ void AABB::Update(glm::mat3 _bodyOrientation)
 //TODO
 bool AABB::CheckAgainst(AABB _other)
 {
+  bool ret = true;
 
-  return false;
+  if (worldMax.z < _other.worldMin.z || worldMin.z > _other.worldMax.z) ret = false;
+  if (worldMax.x < _other.worldMin.x || worldMin.x > _other.worldMax.x) ret = false;
+  if (worldMax.y < _other.worldMin.y || worldMin.y > _other.worldMax.y) ret = false;
+
+
+  return ret;
 }
 bool AABB::Check(AABB _l, AABB _r)
 {
+  bool ret = true;
 
-  return false;
+  if (_l.worldMax.z < _r.worldMin.z || _l.worldMin.z > _r.worldMax.z) ret = false;
+  if (_l.worldMax.x < _r.worldMin.x || _l.worldMin.x > _r.worldMax.x) ret = false;
+  if (_l.worldMax.y < _r.worldMin.y || _l.worldMin.y > _r.worldMax.y) ret = false;
+
+
+  return ret;
 }
