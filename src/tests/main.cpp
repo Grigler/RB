@@ -190,9 +190,9 @@ TEST(ForwardEuler, Integration)
 */
 TEST(ForwardEuler, RegisterCallUnregister)
 {
-  ASSERT_NO_THROW(RB::Int::ForwardEuler::registerFunc());
+  ASSERT_NO_THROW(RB::ForwardEuler::registerFunc());
   ASSERT_NO_THROW(RB::IntegratorFactory::getFunction("ForwardEuler")(nullptr,2.0f));
-  ASSERT_NO_THROW(RB::Int::ForwardEuler::unregisterFunc());
+  ASSERT_NO_THROW(RB::ForwardEuler::unregisterFunc());
 }
 
 int main(int argc, char **argv)

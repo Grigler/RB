@@ -2,7 +2,7 @@
 
 #include "Body.h"
 
-using namespace RB::Int;
+using namespace RB;
 
 void ForwardEuler::registerFunc()
 {

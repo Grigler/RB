@@ -3,10 +3,9 @@
 
 #include "Integrator.h"
 
-namespace RB { class Body; }
-
-namespace RB::Int
+namespace RB
 {
+  class Body;
 
   class ForwardEuler : public Integrator
   {
