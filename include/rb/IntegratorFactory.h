@@ -8,23 +8,20 @@ namespace RB
 {
 
   class Integrator;
+  class Body;
+
 
   class IntegratorFactory
   {
   public:
-    static void registerIntegrator
-    (std::string _name, std::function<std::shared_ptr<Integrator> ()> _f);
-    static void unregisterIntegrator
-    (std::string _name, std::function<std::shared_ptr<Integrator> ()> _f);
-    static std::shared_ptr<Integrator> getIntegrator(std::string _name);
+    static void registerFunc
+      (std::string _name, std::function<void(std::shared_ptr<Body>,float)> _func);
+    static void unregisterFunc(std::string _name);
+    static std::function<void(std::shared_ptr<Body>,float)> getFunction(std::string _name);
 
   private:
-    //Map of <name,shared_ptr>
-    static std::unordered_map <
-      std::string,
-      std::function<std::shared_ptr<Integrator> ()>
-    > m_integrators;
-
+    static std::unordered_map<std::string,
+      std::function<void(std::shared_ptr<Body>,float)> > m_functions;
   };
 
 }

@@ -2,14 +2,17 @@
 
 #include "Body.h"
 
-using namespace RB;
+using namespace RB::Int;
 
-std::shared_ptr<Integrator> ForwardEuler::create()
+void ForwardEuler::registerFunc()
 {
-  std::shared_ptr<Integrator> ret = std::make_shared<ForwardEuler>();
-  return ret;
+  IntegratorFactory::registerFunc("ForwardEuler", integrate);
 }
-void ForwardEuler::Integrate(std::weak_ptr<Body> _b)
+void ForwardEuler::unregisterFunc()
 {
-  //TODO
+  IntegratorFactory::unregisterFunc("ForwardEuler");
+}
+void ForwardEuler::integrate(std::shared_ptr<RB::Body> _b, float _dt)
+{
+  printf("test %f\n", _dt);
 }

@@ -3,6 +3,8 @@
 
 #include <memory>
 
+#include "IntegratorFactory.h"
+
 namespace RB
 {
   class Body;
@@ -10,9 +12,10 @@ namespace RB
   class Integrator
   {
   public:
-    virtual std::shared_ptr<Integrator> create() { return nullptr; }
-    virtual void integrate(std::weak_ptr<Body> _b) {}
+
   };
+
+
 }
 
 #endif

@@ -1,36 +1,35 @@
 #include "IntegratorFactory.h"
 
+#include "Body.h"
+
 using namespace RB;
 
-std::unordered_map<
-  std::string,
-  std::function<std::shared_ptr<Integrator> ()>
-> IntegratorFactory::m_integrators;
+std::unordered_map<std::string,
+  std::function<void(std::shared_ptr<Body>,float)>> IntegratorFactory::m_functions;
 
-void IntegratorFactory::registerIntegrator
-(std::string _name, std::function<std::shared_ptr<Integrator> ()> _f)
+void IntegratorFactory::registerFunc
+(std::string _name, std::function<void(std::shared_ptr<Body>,float)> _func)
 {
-  auto i = m_integrators.find(_name);
-  if (i == m_integrators.end())
+  auto i = m_functions.find(_name);
+  if (i == m_functions.end())
   {
-    m_integrators[_name] = _f;
+    m_functions[_name] = _func;
   }
 }
-void IntegratorFactory::unregisterIntegrator
-(std::string _name, std::function<std::shared_ptr<Integrator> ()> _f)
+void IntegratorFactory::unregisterFunc(std::string _name)
 {
-  auto i = m_integrators.find(_name);
-  if(i != m_integrators.end())
+  auto i = m_functions.find(_name);
+  if (i != m_functions.end())
   {
-    m_integrators.erase(i);
+    m_functions.erase(i);
   }
 }
-std::shared_ptr<Integrator> IntegratorFactory::getIntegrator(std::string _name)
+std::function<void(std::shared_ptr<Body>,float)> IntegratorFactory::getFunction(std::string _name)
 {
-  auto i = m_integrators.find(_name);
-  if (i != m_integrators.end())
+  auto i = m_functions.find(_name);
+  if (i != m_functions.end())
   {
-    return i->second();
+    return i->second;
   }
   else
   {

@@ -156,6 +156,7 @@ TEST(bvhLimits, NoBodyTraversal)
 }
 
 //IntegratorFactory
+/*
 TEST(IntegratorFactory, RegisteringIntegrator)
 {
   RB::IntegratorFactory::registerIntegrator("ForwardEuler", RB::ForwardEuler::create);
@@ -186,7 +187,13 @@ TEST(ForwardEuler, Integration)
   EXPECT_NE(fe.get(), nullptr);
   fe->integratre();
 }
-
+*/
+TEST(ForwardEuler, RegisterCallUnregister)
+{
+  ASSERT_NO_THROW(RB::Int::ForwardEuler::registerFunc());
+  ASSERT_NO_THROW(RB::IntegratorFactory::getFunction("ForwardEuler")(nullptr,2.0f));
+  ASSERT_NO_THROW(RB::Int::ForwardEuler::unregisterFunc());
+}
 
 int main(int argc, char **argv)
 {

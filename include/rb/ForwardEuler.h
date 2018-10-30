@@ -3,13 +3,19 @@
 
 #include "Integrator.h"
 
-namespace RB
+namespace RB { class Body; }
+
+namespace RB::Int
 {
+
   class ForwardEuler : public Integrator
   {
   public:
-    static std::shared_ptr<Integrator> create() ;
-    void integrate(std::weak_ptr<Body> _b) override;
+    static void registerFunc();
+    static void unregisterFunc();
+    static void integrate(std::shared_ptr<Body> _b, float _dt);
+  private:
+
   };
 }
 
