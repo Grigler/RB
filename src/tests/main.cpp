@@ -158,39 +158,7 @@ TEST(bvhLimits, NoBodyTraversal)
   //Adding no bodies to bvh and attempting to traverse
 }
 
-//IntegratorFactory
-/*
-TEST(IntegratorFactory, RegisteringIntegrator)
-{
-  RB::IntegratorFactory::registerIntegrator("ForwardEuler", RB::ForwardEuler::create);
-  std::shared_ptr<RB::Integrator> fe = RB::IntegratorFactory::getIntegrator("ForwardEuler");
-  ASSERT_NE(fe.get(), nullptr);
-  //No need for teardown as this is outside of test scope and handled in implementation
-}
-TEST(IntegratorFactory, UnregisterIntegrator)
-{
-  RB::IntegratorFactory::registerIntegrator("ForwardEuler", RB::ForwardEuler::create);
-  RB::IntegratorFactory::unregisterIntegrator("ForwardEuler", RB::ForwardEuler::create);
-  std::shared_ptr<RB::Integrator> fe = RB::IntegratorFactory::getIntegrator("ForwardEuler");
-  ASSERT_EQ(fe.get(), nullptr);
-}
 
-//ForwardEuler
-TEST(ForwardEuler, Creation)
-{
-  //Identical to IntegratorFactory::RegisterIntegrator test
-  RB::IntegratorFactory::registerIntegrator("ForwardEuler", RB::ForwardEuler::create);
-  std::shared_ptr<RB::Integrator> fe = RB::IntegratorFactory::getIntegrator("ForwardEuler");
-  ASSERT_NE(fe.get(), nullptr);
-}
-TEST(ForwardEuler, Integration)
-{
-  RB::IntegratorFactory::registerIntegrator("ForwardEuler", RB::ForwardEuler::create);
-  std::shared_ptr<RB::Integrator> fe = RB::IntegratorFactory::getIntegrator("ForwardEuler");
-  EXPECT_NE(fe.get(), nullptr);
-  fe->integratre();
-}
-*/
 TEST(IntegratorFactory, NoIntegratorOnInit)
 {
   ASSERT_EQ(RB::IntegratorFactory::getGlobalFunction(), nullptr);
@@ -207,14 +175,33 @@ TEST(IntegratorFactory, AssignAndCallGlobalFunc)
     RB::ForwardEuler::registerFunc();
     RB::IntegratorFactory::setGlobal(RB::Integrators::ForwardEuler);
   );
-  ASSERT_NO_THROW(RB::IntegratorFactory::getGlobalFunction()(nullptr,0.0f));
+  std::shared_ptr<RB::Body> b = std::make_shared<RB::Body>();
+  ASSERT_NO_THROW(RB::IntegratorFactory::getGlobalFunction()(b,0.008f));
 }
 
 TEST(ForwardEuler, RegisterCallUnregister)
 {
   ASSERT_NO_THROW(RB::ForwardEuler::registerFunc());
-  ASSERT_NO_THROW(RB::IntegratorFactory::getFunction(RB::Integrators::ForwardEuler)(nullptr,0.0f));
+  std::shared_ptr<RB::Body> b = std::make_shared<RB::Body>();
+  ASSERT_NO_THROW(RB::IntegratorFactory::getFunction(RB::Integrators::ForwardEuler)(b,0.008f));
   ASSERT_NO_THROW(RB::ForwardEuler::unregisterFunc());
+  ASSERT_EQ(RB::IntegratorFactory::getFunction(RB::Integrators::ForwardEuler), nullptr);
+}
+TEST(SemiImplicitEuler, RegisterCallUnregister)
+{
+  ASSERT_NO_THROW(RB::SemiImplicitEuler::registerFunc());
+  std::shared_ptr<RB::Body> b = std::make_shared<RB::Body>();
+  ASSERT_NO_THROW(RB::IntegratorFactory::getFunction(RB::Integrators::SemiImplicitEuler)(b, 0.008f));
+  ASSERT_NO_THROW(RB::SemiImplicitEuler::unregisterFunc());
+  ASSERT_EQ(RB::IntegratorFactory::getFunction(RB::Integrators::SemiImplicitEuler), nullptr);
+}
+TEST(RK4, RegisterCallUnregister)
+{
+  ASSERT_NO_THROW(RB::RK4::registerFunc());
+  std::shared_ptr<RB::Body> b = std::make_shared<RB::Body>();
+  ASSERT_NO_THROW(RB::IntegratorFactory::getFunction(RB::Integrators::RK4)(b,0.008f));
+  ASSERT_NO_THROW(RB::RK4::unregisterFunc());
+  ASSERT_EQ(RB::IntegratorFactory::getFunction(RB::Integrators::RK4), nullptr);
 }
 
 int main(int argc, char **argv)
