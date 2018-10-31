@@ -4,6 +4,8 @@
 #include <memory>
 #include <list>
 
+#include "glm/glm.hpp"
+
 namespace RB
 {
   class Body;
@@ -15,6 +17,7 @@ namespace RB
     void Kill();
     
     std::weak_ptr<Body> AddBody();
+    std::weak_ptr<Body> AddBody(glm::vec3 _p, glm::vec3 _o);
 
   private:
     std::list< std::shared_ptr<Body> > bodies;

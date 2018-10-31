@@ -17,6 +17,12 @@ TEST(WorldBehaviour, WorldKillResultsInInvalidBodyPtr)
   w.Kill();
   ASSERT_TRUE(b.expired());
 }
+TEST(WorldBehaviour, WorldTick)
+{
+  RB::World w;
+  w.AddBody();
+  ASSERT_NO_THROW(w.Tick());
+}
 
 //World Limits
 TEST(WorldLimits, LargeBodyCount)
@@ -41,6 +47,13 @@ TEST(BodyBehaviour, DefaultAtOrigin)
   std::weak_ptr<RB::Body> b = w.AddBody();
   EXPECT_FALSE(b.expired());
   ASSERT_EQ(b.lock()->getPosition4(), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+}
+TEST(BodyBehaviour, ParamCtor)
+{
+  RB::World w;
+  std::weak_ptr<RB::Body> b = w.AddBody(glm::vec3(1.0f), glm::vec3(1.0f));
+  EXPECT_FALSE(b.expired());
+  ASSERT_EQ(b.lock()->getPosition4(), glm::vec4(1.0f));
 }
 
 //Body Limits
@@ -84,6 +97,13 @@ TEST(aabbBehaviour, IdenticalAfterFullRotations)
   }
   //Assert that size is approximately the same (within epsilon)
 
+}
+TEST(aabbBehaviour, 180DegreeOrientation)
+{
+  RB::AABB a(glm::vec3(-1.0f), glm::vec3(1.0f));
+  //Rotate and then check it is equivalent
+  ASSERT_NO_THROW(a.Update(glm::mat3(1.0f)));
+  //TODO - MAKE IT ACTUALLY DO SOMETHING
 }
 
 //AABB Limits

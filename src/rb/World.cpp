@@ -29,3 +29,8 @@ std::weak_ptr<Body> World::AddBody()
   bodies.push_back(std::make_shared<Body>());
   return std::weak_ptr<Body>(bodies.back());
 }
+std::weak_ptr<Body> World::AddBody(glm::vec3 _p, glm::vec3 _o)
+{
+  bodies.push_back(std::make_shared<Body>(_p, _o));
+  return std::weak_ptr<Body>(bodies.back());
+}

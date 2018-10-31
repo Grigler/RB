@@ -21,6 +21,8 @@ namespace RB
 
     static bool Check(AABB _l, AABB _r);
 
+    void Update(glm::mat3 _bodyOrientation);
+
   private:
     //Initialised and never changed - used to orient
     glm::vec3 localMin = glm::vec3(0.0f);
@@ -29,7 +31,6 @@ namespace RB
     glm::vec3 worldMin = glm::vec3(0.0f);
     glm::vec3 worldMax = glm::vec3(0.0f);
 
-    void Update(glm::mat3 _bodyOrientation);
 
     bool CheckAgainst(AABB _other);
 
