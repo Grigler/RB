@@ -63,7 +63,8 @@ TEST(aabbBehaviour, PassCaseGeneric)
 {
   RB::AABB l(glm::vec3(-1.0f), glm::vec3(1.0f));
   RB::AABB r(glm::vec3(-0.5f), glm::vec3(0.5f));
-  ASSERT_TRUE(RB::AABB::Check(l, r));
+  EXPECT_TRUE(RB::AABB::Check(l, r));
+  ASSERT_TRUE(l.CheckAgainst(r));
 
 }
 TEST(aabbBehaviour, FailCaseGeneric)

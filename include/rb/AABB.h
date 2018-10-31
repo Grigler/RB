@@ -20,6 +20,7 @@ namespace RB
     AABB(std::weak_ptr<Body> _parent);
 
     static bool Check(AABB _l, AABB _r);
+    bool CheckAgainst(AABB _other);
 
     void Update(glm::mat3 _bodyOrientation);
 
@@ -30,9 +31,6 @@ namespace RB
 
     glm::vec3 worldMin = glm::vec3(0.0f);
     glm::vec3 worldMax = glm::vec3(0.0f);
-
-
-    bool CheckAgainst(AABB _other);
 
     std::weak_ptr<Body> parent;
   };
