@@ -14,5 +14,5 @@ void ForwardEuler::unregisterFunc()
 }
 void ForwardEuler::integrate(std::shared_ptr<RB::Body> _b, float _dt)
 {
-  printf("test %f\n", _dt);
+  
 }

@@ -24,10 +24,13 @@ TEST(WorldLimits, LargeBodyCount)
   RB::World w;
   //Need to define a better number for this
   //1 million is too arbitrary
-  for(size_t i = 0; i < 1000000; i++)
+  const size_t max = 1000000;
+  for(size_t i = 0; i < max; i++)
   {
     ASSERT_NO_THROW(w.AddBody());
+    if(i % 100000 == 0) printf("\rBody: %i", i);
   }
+  printf("\rBody: %i\r", max);
   w.Kill();
 }
 
@@ -188,10 +191,29 @@ TEST(ForwardEuler, Integration)
   fe->integratre();
 }
 */
+TEST(IntegratorFactory, NoIntegratorOnInit)
+{
+  ASSERT_EQ(RB::IntegratorFactory::getGlobalFunction(), nullptr);
+}
+TEST(IntegratorFactory, ClearIntegratorOnBadAssign)
+{
+  EXPECT_NO_THROW(RB::IntegratorFactory::setGlobal("Not A Function At All"));
+  ASSERT_EQ(RB::IntegratorFactory::getGlobalFunction(), nullptr);
+}
+TEST(IntegratorFactory, AssignAndCallGlobalFunc)
+{
+  ASSERT_NO_THROW
+  (
+    RB::ForwardEuler::registerFunc();
+    RB::IntegratorFactory::setGlobal(RB::Integrators::ForwardEuler);
+  );
+  ASSERT_NO_THROW(RB::IntegratorFactory::getGlobalFunction()(nullptr,0.0f));
+}
+
 TEST(ForwardEuler, RegisterCallUnregister)
 {
   ASSERT_NO_THROW(RB::ForwardEuler::registerFunc());
-  ASSERT_NO_THROW(RB::IntegratorFactory::getFunction("ForwardEuler")(nullptr,2.0f));
+  ASSERT_NO_THROW(RB::IntegratorFactory::getFunction(RB::Integrators::ForwardEuler)(nullptr,0.0f));
   ASSERT_NO_THROW(RB::ForwardEuler::unregisterFunc());
 }
 

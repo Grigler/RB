@@ -18,4 +18,7 @@ namespace RB
   };
 }
 
+//Must be called at the end of all integrators to register name
+INTERNAL_REG_INTEGRATOR(ForwardEuler);
+
 #endif
