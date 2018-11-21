@@ -22,17 +22,23 @@ namespace RB
     glm::quat orientation = glm::identity<glm::quat>();
 
     glm::vec3 linearVelocity = glm::vec3(0.0f);
-    float mass = 1.0f;
     glm::vec3 accumulatedForce = glm::vec3(0.0f);
+    float mass = 1.0f;
 
     glm::vec3 angularVelocity = glm::vec3(0.0f);
-    glm::mat3 ineritaTensor = glm::identity<glm::mat3>();
     glm::vec3 accumulatedTorque = glm::vec3(0.0f);
+    glm::mat3 ineritaTensor = glm::identity<glm::mat3>();
 
     //Helper functions
     glm::vec4 getPosition4() { return glm::vec4(position, 1); }
     glm::mat3 getRotationMatrix3() { return glm::toMat3(orientation); }
     glm::mat4 getRotationMatrix4() { return glm::toMat4(orientation); }
+
+
+    void applyForceImpulse(glm::vec3 _force);
+    void applyForceImpulseAtLocation(glm::vec3 _force, glm::vec3 _localLocation);
+
+    void applyTorqueImpulse(glm::vec3 _torque);
 
   private:
 

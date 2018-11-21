@@ -2,6 +2,16 @@
 
 #include "rb/RB.h"
 
+//Particularly unsafe - but only a compile-time issue so easy to catch
+#define ASSERT_FLOAT_VEC3_EQ(T,A){\
+ASSERT_FLOAT_EQ(T.x,A.x);\
+ASSERT_FLOAT_EQ(T.y,A.y);\
+ASSERT_FLOAT_EQ(T.z,A.z);}
+#define EXPECT_FLOAT_VEC3_EQ(T,A){\
+EXPECT_FLOAT_EQ(T.x,A.x);\
+EXPECT_FLOAT_EQ(T.y,A.y);\
+EXPECT_FLOAT_EQ(T.z,A.z);}
+
 //World Behaviour
 TEST(WorldBehaviour, AddSingleBodyGetValidPtr)
 {
@@ -56,7 +66,43 @@ TEST(BodyBehaviour, ParamCtor)
   ASSERT_EQ(b.lock()->getPosition4(), glm::vec4(1.0f));
 }
 
+TEST(BodyBehaviour, applyForceImpulse)
+{
+  RB::Body b;
+  glm::vec3 f = glm::vec3(1.0f);
+  b.applyForceImpulse(f);
+  ASSERT_FLOAT_VEC3_EQ(b.accumulatedForce, f);
+}
+TEST(BodyBehaviour, applyForceImpulseLocation)
+{
+  RB::Body b;
+  glm::vec3 f = glm::vec3(1.0f, 0.0f, 1.0f);
+  glm::vec3 ll = glm::vec3(0.0f, 1.0f, 1.0f);
+  b.applyForceImpulseAtLocation(f, ll);
+  ASSERT_FLOAT_VEC3_EQ(b.accumulatedForce, f);
+  //Should result in a torque of 
+  ASSERT_FLOAT_VEC3_EQ(b.accumulatedTorque, glm::cross(ll, f));
+}
+TEST(BodyBehaviour, applyTorqueImpulse)
+{
+  RB::Body b;
+  glm::vec3 t = glm::vec3(1.0f);
+  b.applyTorqueImpulse(t);
+  ASSERT_FLOAT_VEC3_EQ(b.accumulatedTorque, t);
+}
 //Body Limits
+TEST(BodyLimits, applyLargeAndSmallTorque)
+{
+  RB::Body b;
+  //TODO - replace with non-arbitrary numbers
+  glm::vec3 bigF = glm::vec3(9999999.0f);
+  glm::vec3 smallF = glm::vec3(0.0000002f);
+  b.applyForceImpulse(bigF);
+  EXPECT_FLOAT_VEC3_EQ(b.accumulatedForce, bigF);
+  b.applyForceImpulse(smallF);
+  ASSERT_FLOAT_VEC3_EQ(b.accumulatedForce, glm::vec3(9999999.0000002f));
+}
+
 
 //AABB Behaviour
 TEST(aabbBehaviour, PassCaseGeneric)
