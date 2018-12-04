@@ -183,6 +183,7 @@ TEST(bvhBehaviour, ClearTreeResultsInNoBodyDataLoss)
   //Clearing the bvh
 
   //Checking for invalidated ptrs in bodies
+  ASSERT_TRUE(false);
 }
 TEST(bvhBehaviour, KillingWorldKillsBVH)
 {
@@ -191,34 +192,40 @@ TEST(bvhBehaviour, KillingWorldKillsBVH)
   //Kill world
 
   //Ensure invalidity of bvh
+  ASSERT_TRUE(false);
 }
 TEST(bvhBehaviour, aabbPassCaseTestInBVH)
 {
   //Adding aabbs to bvh (sparse env)
 
   //Checking known collision between low-down in tree
+  ASSERT_TRUE(false);
 }
 TEST(bvhBehaviour, aabbFailCaseTestInBVH)
 {
   //Adding aabbs to bvh(sparse env)
 
   //Checking known non-collision between low-down in tree
+  ASSERT_TRUE(false);
 }
 TEST(bvhBehaviour, BodySelfTest)
 {
   //Create body
 
   //Force test between body AABB in the tree
+  ASSERT_TRUE(false);
 }
 
 //BVH Limits
 TEST(bvhLimits, LargeNumberTest)
 {
   //Adding large numbers to bvh and testing for non-crash
+  ASSERT_TRUE(false);
 }
 TEST(bvhLimits, NoBodyTraversal)
 {
   //Adding no bodies to bvh and attempting to traverse
+  ASSERT_TRUE(false);
 }
 
 
