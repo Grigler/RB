@@ -133,24 +133,20 @@ TEST(aabbBehaviour, CloselyPassingAABB)
   RB::AABB r(glm::vec3(1.0f + glm::epsilon<float>()), glm::vec3(2.0f));
   ASSERT_FALSE(RB::AABB::Check(l, r));
 }
-TEST(aabbBehaviour, IdenticalAfterFullRotations)
+TEST(aabbBehaviour, OrientationUpdate)
 {
-  //Define AABB
-
-  //Rotate 4 times by 90 degrees
-  for(size_t i = 0; i < 4; i++)
-  {
-    //Rotate
-  }
-  //Assert that size is approximately the same (within epsilon)
-
-}
-TEST(aabbBehaviour, 180DegreeOrientation)
-{
-  RB::AABB a(glm::vec3(-1.0f), glm::vec3(1.0f));
-  //Rotate and then check it is equivalent
-  ASSERT_NO_THROW(a.Update(glm::mat3(1.0f)));
-  //TODO - MAKE IT ACTUALLY DO SOMETHING
+  //1x2x1 box oriented 90 degrees to make a 1x2x3
+  RB::AABB a(glm::vec3(0.0f), glm::vec3(1.0f, 2.0f, 3.0f));
+  
+  glm::mat4 r = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f) , glm::vec3(0, 0, 1));
+  //Update
+  ASSERT_NO_THROW(a.Update(r));
+  //Ensuring new box bounds are 2x-1x3
+  EXPECT_FLOAT_VEC3_EQ(a.getWorldMin(), glm::vec3(0.0f, -1.0f, 0.0f));
+  EXPECT_FLOAT_VEC3_EQ(a.getWorldMax(), glm::vec3(2.0f, 0.0f, 3.0f));
+  //Ensuring locals are identical
+  EXPECT_FLOAT_VEC3_EQ(a.getLocalMin(), glm::vec3(0.0f));
+  EXPECT_FLOAT_VEC3_EQ(a.getLocalMax(), glm::vec3(1.0f, 2.0f, 3.0f));
 }
 
 //AABB Limits

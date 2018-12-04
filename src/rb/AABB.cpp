@@ -18,10 +18,25 @@ AABB::AABB(std::weak_ptr<Body> _parent)
   parent = _parent.lock();
 }
 
-void AABB::Update(glm::mat3 _bodyOrientation)
+void AABB::Update(glm::mat4 _bodyOrientation)
 {
-  //TODO
-  //Rotate locals by _bodyOrientation and find new min/max
+  //Orienting local min/max by body orientation
+  glm::vec4 rMin, rMax;
+  rMin = glm::vec4(localMin,1.0f) * _bodyOrientation;
+  rMax = glm::vec4(localMax,1.0f) * _bodyOrientation;
+
+  //Finding min/max values for oriented
+  glm::vec3 newWorldMin = rMin;
+  glm::vec3 newWorldMax = rMax;
+  for (size_t i = 0; i < 3; i++)
+  {
+    newWorldMin[i] = glm::min(newWorldMin[i], rMax[i]);
+    newWorldMax[i] = glm::max(newWorldMax[i], rMin[i]);
+  }
+
+  //Adjusting world min/max so that locals retain size
+  worldMin = newWorldMin;
+  worldMax = newWorldMax;
 }
 
 //TODO

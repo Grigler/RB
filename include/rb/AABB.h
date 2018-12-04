@@ -22,7 +22,12 @@ namespace RB
     static bool Check(AABB _l, AABB _r);
     bool CheckAgainst(AABB _other);
 
-    void Update(glm::mat3 _bodyOrientation);
+    void Update(glm::mat4 _bodyOrientation);
+
+    glm::vec3 getWorldMin() { return worldMin; }
+    glm::vec3 getWorldMax() { return worldMax; }
+    glm::vec3 getLocalMin() { return localMin; }
+    glm::vec3 getLocalMax() { return localMax; }
 
   private:
     //Initialised and never changed - used to orient
