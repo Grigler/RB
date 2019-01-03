@@ -17,7 +17,7 @@ namespace RB
     World();
     ~World();
 
-    void Tick();
+    void Tick(float _dt);
     void Kill();
     
     std::weak_ptr<Body> AddBody();
@@ -27,6 +27,9 @@ namespace RB
 
   private:
     std::list< std::shared_ptr<Body> > bodies;
+
+    static float timeAccumulator;
+    static float fixedTimestep;
   };
 
 }

@@ -2,14 +2,25 @@
 
 #include <BVH.h>
 #include <Body.h>
+#include <IntegratorFactory.h>
+
+#include <ForwardEuler.h>
+
+#include <chrono>
 
 using namespace RB;
 
 std::unique_ptr<BVH> World::bvh;
 
+float World::timeAccumulator = 0.0f;
+float World::fixedTimestep = 1.0f/120.0f;
+
 World::World()
 {
   bvh = std::make_unique<BVH>();
+  //Registering and setting forward euler as a default integrator on world start-up
+  IntegratorFactory::registerFunc(Integrators::ForwardEuler, ForwardEuler::integrate);
+  IntegratorFactory::setGlobal(Integrators::ForwardEuler);
 }
 World::~World()
 {
@@ -17,19 +28,33 @@ World::~World()
 }
 
 //TODO
-void World::Tick()
+
+void World::Tick(float _dt)
 {
-  for (auto i = bodies.begin(); i != bodies.end(); i++)
+  //Adding delta time to static accumulator
+  timeAccumulator += _dt;
+
+  //Consuming frame time with multiple fixed sub-steps
+  while (timeAccumulator >= fixedTimestep)
   {
-    //i->integrate
+    //Itegration
+    for (auto i = bodies.begin(); i != bodies.end(); i++)
+    {
+      IntegratorFactory::getGlobalFunction()(*i, fixedTimestep);
+    }
+
+    //Broadphase
+
+
+    //Narrowphase
+
+
+    //Collision solving
+    
+
+    //Reducing accumulator by fixed timestep
+    timeAccumulator -= fixedTimestep;
   }
-
-  //Broadphase
-
-  //Narrowphase
-
-  //Collision solving
-
 }
 void World::Kill()
 {

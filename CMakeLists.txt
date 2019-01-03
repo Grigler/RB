@@ -96,12 +96,19 @@ add_definitions(-DNO_DLL)
 add_executable(example
   src/example/main.cpp
 
+  include/example/Renderer.h
+  include/example/GameClock.h
+  
+  src/example/Renderer.cpp
+  src/example/GameClock.cpp
+  
   src/example/gl3w.c
 )
 
 target_include_directories(example PUBLIC
   ${CONTRIB}/include
   ${PROJECT_SOURCE_DIR}/include/rb
+  ${PROJECT_SOURCE_DIR}/include/example
 )
 
 target_link_libraries(example rb SDL2 SDL2main optimized NGL)

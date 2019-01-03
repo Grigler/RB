@@ -33,7 +33,7 @@ TEST(WorldBehaviour, WorldTick)
 {
   RB::World w;
   w.AddBody();
-  ASSERT_NO_THROW(w.Tick());
+  ASSERT_NO_THROW(w.Tick(1.0f));
 }
 
 //World Limits
