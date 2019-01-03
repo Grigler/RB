@@ -32,11 +32,13 @@ World::~World()
 void World::Tick(float _dt)
 {
   //Adding delta time to static accumulator
+  if (_dt > 0.25f) _dt = 0.25f;
   timeAccumulator += _dt;
 
   //Consuming frame time with multiple fixed sub-steps
   while (timeAccumulator >= fixedTimestep)
   {
+    //printf("! tick\n");
     //Itegration
     for (auto i = bodies.begin(); i != bodies.end(); i++)
     {

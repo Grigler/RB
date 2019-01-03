@@ -23,11 +23,12 @@ int main(int argc, char **argv)
   
   //RB INIT
   RB::World world;
-  world.AddBody();
-  world.AddBody();
-  world.AddBody();
-  world.AddBody();
-
+  std::vector<std::weak_ptr<RB::Body>> bodies;
+  for (size_t i = 0; i < 1; i++)
+  {
+    bodies.push_back(world.AddBody(glm::vec3(i),glm::vec3(0)));
+    bodies.back().lock()->applyForceImpulse(glm::vec3(0.0f, -1.0f, 0.0f));
+  }
 
   SDL_Event e;
   bool isRunning = true;
@@ -35,7 +36,7 @@ int main(int argc, char **argv)
   {
     //Updating timer
     GameClock::UpdateDT();
-
+    printf("\rFPS: %.2f\tBodies: %zu", 1.0f / GameClock::dt, bodies.size());
     //Input
     while (SDL_PollEvent(&e))
     {
@@ -47,8 +48,10 @@ int main(int argc, char **argv)
       case SDL_KEYDOWN:
         switch(e.key.keysym.sym)
         {
-        case SDLK_ESCAPE: isRunning = false;
+        case SDLK_ESCAPE: isRunning = false; break;
         case SDLK_SPACE: ngl::NGLMessage::addMessage("This is a test", Colours::RED); break;
+        case SDLK_UP: for(int i = 0; i < 25; i++)bodies.push_back(world.AddBody()); break;
+        case SDLK_r: world.Kill(); bodies.clear(); break;
         }
       }
     }
@@ -58,9 +61,14 @@ int main(int argc, char **argv)
 
     //render here
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    /*
+    for (size_t i = 0; i < bodies.size(); i++)
+    {
+      printf("B: %i\n\t%f.0f\n",i,bodies.at(i).lock()->position.y);
+    }
+    */
     Renderer::SwapBuffers();
     
-
     //shitty vsync
     //SDL_Delay(8);
   }
