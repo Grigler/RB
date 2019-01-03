@@ -9,19 +9,24 @@
 namespace RB
 {
   class Body;
+  class BVH;
 
   class World
   {
   public:
+    World();
+    ~World();
+
     void Tick();
     void Kill();
     
     std::weak_ptr<Body> AddBody();
     std::weak_ptr<Body> AddBody(glm::vec3 _p, glm::vec3 _o);
 
+    static std::unique_ptr<BVH> bvh;
+
   private:
     std::list< std::shared_ptr<Body> > bodies;
-
   };
 
 }

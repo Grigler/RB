@@ -28,6 +28,9 @@ namespace RB
 
     bool CheckAgainst(std::weak_ptr<AABB> _against);
 
+    void AddAABB(std::weak_ptr<AABB> _aabb);
+    void AddAABB(AABB &_aabb);
+
   private:
     std::shared_ptr<BVHNode> root;
     //Using list instead of vector to avoid issues with resizing

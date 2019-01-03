@@ -4,6 +4,7 @@
 #include "World.h"
 #include "Body.h"
 #include "AABB.h"
+#include "BVH.h"
 
 #include "IntegratorFactory.h"
 #include "ForwardEuler.h"

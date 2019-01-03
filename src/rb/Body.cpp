@@ -1,15 +1,23 @@
 #include <Body.h>
 
+#include <World.h>
+#include <BVH.h>
+
 using namespace RB;
 
 Body::Body()
 {
   boundingBox = std::make_shared<AABB>(selfRef);
+  World::bvh.get()->AddAABB(boundingBox);
 }
-Body::Body(glm::vec3 _position, glm::quat _orientation)
+Body::Body(glm::vec3 _position, glm::quat _orientation,
+  glm::vec3 _bvMin, glm::vec3 _bvMax)
 {
   position = _position;
   orientation = _orientation;
+
+  boundingBox = std::make_shared<AABB>(selfRef, _bvMin, _bvMax);
+  World::bvh.get()->AddAABB(boundingBox);
 }
 
 void Body::applyForceImpulse(glm::vec3 _force)

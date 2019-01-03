@@ -14,9 +14,11 @@ namespace RB
 
   class Body
   {
+    friend class World;
   public:
     Body();
-    Body(glm::vec3 _position, glm::quat _orientation);
+    Body(glm::vec3 _position, glm::quat _orientation,
+      glm::vec3 _bvMin = glm::vec3(-1.0f), glm::vec3 _bvMax = glm::vec3(1.0f));
 
     glm::vec3 position = glm::vec3(0.0f);
     glm::quat orientation = glm::identity<glm::quat>();
@@ -40,9 +42,9 @@ namespace RB
 
     void applyTorqueImpulse(glm::vec3 _torque);
 
-  private:
-
     std::shared_ptr<AABB> boundingBox;
+
+  private:
     std::weak_ptr<Body> selfRef;
 
   };

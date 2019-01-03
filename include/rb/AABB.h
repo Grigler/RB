@@ -18,6 +18,8 @@ namespace RB
     AABB(glm::vec3 _min, glm::vec3 _max);
     //Derives bounds from given parent
     AABB(std::weak_ptr<Body> _parent);
+    //Assigns parents and takes given bounds
+    AABB(std::weak_ptr<Body> _parent, glm::vec3 _min, glm::vec3 _max);
 
     static bool Check(AABB _l, AABB _r);
     bool CheckAgainst(AABB _other);

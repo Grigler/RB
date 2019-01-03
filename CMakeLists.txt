@@ -58,12 +58,6 @@ target_include_directories(rb PUBLIC
   ${PROJECT_SOURCE_DIR}/include/rb
 )
 
-#-----------------Example-----------------
-#add_executable(example
-#	src/example/main.cpp
-#)
-#target_link_libraries(example rb)
-
 
 #------------------Tests------------------
 enable_testing()
@@ -92,6 +86,23 @@ target_include_directories(tests PUBLIC
 )
 target_link_libraries(tests rb gtest_main)
 
-
-
 add_test(AllTests ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests)
+
+
+#-----------------NGL/RB Example-----------------
+
+add_definitions(-DNO_DLL)
+
+add_executable(example
+  src/example/main.cpp
+
+  src/example/gl3w.c
+)
+
+target_include_directories(example PUBLIC
+  ${CONTRIB}/include
+  ${PROJECT_SOURCE_DIR}/include/rb
+)
+
+target_link_libraries(example rb SDL2 SDL2main optimized NGL)
+target_link_libraries(example debug NGLD)

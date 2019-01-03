@@ -12,6 +12,8 @@ EXPECT_FLOAT_EQ(T.x,A.x);\
 EXPECT_FLOAT_EQ(T.y,A.y);\
 EXPECT_FLOAT_EQ(T.z,A.z);}
 
+#define BODY_NUM_LIMIT (1000000)
+
 //World Behaviour
 TEST(WorldBehaviour, AddSingleBodyGetValidPtr)
 {
@@ -38,15 +40,12 @@ TEST(WorldBehaviour, WorldTick)
 TEST(WorldLimits, LargeBodyCount)
 {
   RB::World w;
-  //Need to define a better number for this
-  //1 million is too arbitrary
-  const size_t max = 1000000;
-  for(size_t i = 0; i < max; i++)
+  for(size_t i = 0; i < BODY_NUM_LIMIT; i++)
   {
     ASSERT_NO_THROW(w.AddBody());
     if(i % 100000 == 0) printf("\rBody: %i", i);
   }
-  printf("\rBody: %i\r", max);
+  printf("\rBody: %i\r", BODY_NUM_LIMIT);
   w.Kill();
 }
 
@@ -185,21 +184,47 @@ TEST(bvhBehaviour, ClearTreeResultsInNoBodyDataLoss)
   //Checking for invalidated ptrs in bodies
   ASSERT_TRUE(false);
 }
+TEST(bvhBehaviour, CreatedOnWorldCreation)
+{
+  RB::World w;
+  ASSERT_TRUE(RB::World::bvh.get() != nullptr);
+}
 TEST(bvhBehaviour, KillingWorldKillsBVH)
 {
-  //Adding large amounts of bodies
-
-  //Kill world
-
-  //Ensure invalidity of bvh
+  //Creating and destroying world dynamically
+  std::shared_ptr<RB::World> w;
+  ASSERT_NO_THROW(w = std::make_shared<RB::World>());
+  ASSERT_NO_THROW(w.reset());
+  //Ensuring bvh has been destroyed
+  ASSERT_TRUE(RB::World::bvh.get() == nullptr);
+}
+TEST(bvhBehaviour, AddingArbitraryAABB)
+{
+  //TODO
+  ASSERT_TRUE(false);
+}
+TEST(bvhBehaviour, AddingBodyAABB)
+{
+  //TODO
+  ASSERT_TRUE(false);
+}
+TEST(bvhBehaviour, AddingMultipleBodies)
+{
+  //TODO
   ASSERT_TRUE(false);
 }
 TEST(bvhBehaviour, aabbPassCaseTestInBVH)
 {
-  //Adding aabbs to bvh (sparse env)
-
-  //Checking known collision between low-down in tree
-  ASSERT_TRUE(false);
+  //Adding aabbs to bvh
+  RB::World w;
+  std::shared_ptr<RB::AABB> a = std::make_shared<RB::AABB>(glm::vec3(0.0f), glm::vec3(1.0f));
+  std::shared_ptr<RB::AABB> b = std::make_shared<RB::AABB>(glm::vec3(0.5f), glm::vec3(1.5f));
+  ASSERT_NO_THROW(RB::World::bvh->AddAABB(a));
+  ASSERT_NO_THROW(RB::World::bvh->AddAABB(b));
+  
+  //Checking each against each
+  EXPECT_TRUE(RB::World::bvh->CheckAgainst(a));
+  EXPECT_TRUE(RB::World::bvh->CheckAgainst(b));
 }
 TEST(bvhBehaviour, aabbFailCaseTestInBVH)
 {
@@ -210,22 +235,12 @@ TEST(bvhBehaviour, aabbFailCaseTestInBVH)
 }
 TEST(bvhBehaviour, BodySelfTest)
 {
-  //Create body
-
-  //Force test between body AABB in the tree
-  ASSERT_TRUE(false);
-}
-
-//BVH Limits
-TEST(bvhLimits, LargeNumberTest)
-{
-  //Adding large numbers to bvh and testing for non-crash
-  ASSERT_TRUE(false);
-}
-TEST(bvhLimits, NoBodyTraversal)
-{
-  //Adding no bodies to bvh and attempting to traverse
-  ASSERT_TRUE(false);
+  //Creating world
+  RB::World w;
+  //Adding Body
+  std::weak_ptr<RB::Body> b = w.AddBody();
+  //Ensuring a body doesn't trigger its own check
+  ASSERT_FALSE(RB::World::bvh->CheckAgainst(b.lock()->boundingBox));
 }
 
 

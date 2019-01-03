@@ -15,7 +15,13 @@ AABB::AABB(glm::vec3 _min, glm::vec3 _max)
 //Derives bounds from parent
 AABB::AABB(std::weak_ptr<Body> _parent)
 {
-  parent = _parent.lock();
+  parent = _parent;
+}
+AABB::AABB(std::weak_ptr<Body> _parent, glm::vec3 _min, glm::vec3 _max)
+{
+  parent = _parent;
+  localMin = _min; localMax = _max;
+  worldMin = _min; worldMax = _max;
 }
 
 void AABB::Update(glm::mat4 _bodyOrientation)

@@ -57,11 +57,14 @@ bool BVH::CheckAgainst(std::weak_ptr<AABB> _against)
   //Making the assumption that the root BV check will always pass
   while (!_curr.expired())
   {
-    if (_curr.lock()->left->bv.lock()->CheckAgainst(*_against.lock()))
+    
+    if (_curr.lock()->left.use_count() && 
+      _curr.lock()->left->bv.lock()->CheckAgainst(*_against.lock()))
     {
       _curr = _curr.lock()->left;
     }
-    else if (_curr.lock()->right->bv.lock()->CheckAgainst(*_against.lock()))
+    else if (_curr.lock()->right.use_count() && 
+      _curr.lock()->right->bv.lock()->CheckAgainst(*_against.lock()))
     {
       _curr = _curr.lock()->right;
     }
@@ -72,6 +75,15 @@ bool BVH::CheckAgainst(std::weak_ptr<AABB> _against)
   }
   //_curr expired means that a lowest-level node has passed AABB check
   return true;
+}
+
+void BVH::AddAABB(std::weak_ptr<AABB> _aabb)
+{
+
+}
+void BVH::AddAABB(AABB &_aabb)
+{
+
 }
 
 void BVH::RecurseBuild(std::weak_ptr<BVHNode> _curr,
