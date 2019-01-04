@@ -18,10 +18,12 @@ namespace RB
     ~World();
 
     void Tick(float _dt);
-    void Kill();
+    void KillWorld();
     
     std::weak_ptr<Body> AddBody();
     std::weak_ptr<Body> AddBody(glm::vec3 _p, glm::vec3 _o);
+
+    void KillBody(std::weak_ptr<Body> _body);
 
     static std::unique_ptr<BVH> bvh;
 

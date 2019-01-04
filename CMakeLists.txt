@@ -92,15 +92,23 @@ add_test(AllTests ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/tests)
 #-----------------NGL/RB Example-----------------
 
 add_definitions(-DNO_DLL)
+add_definitions(-D_USE_MATH_DEFINES)
 
 add_executable(example
   src/example/main.cpp
 
   include/example/Renderer.h
   include/example/GameClock.h
+  include/example/Scene.h
+  include/example/Object.h
+  include/example/DrawObject.h
+  
   
   src/example/Renderer.cpp
   src/example/GameClock.cpp
+  src/example/Scene.cpp
+  src/example/Object.cpp
+  src/example/DrawObject.cpp
   
   src/example/gl3w.c
 )

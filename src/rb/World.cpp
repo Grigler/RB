@@ -58,7 +58,7 @@ void World::Tick(float _dt)
     timeAccumulator -= fixedTimestep;
   }
 }
-void World::Kill()
+void World::KillWorld()
 {
   bodies.clear();
 }
@@ -74,4 +74,19 @@ std::weak_ptr<Body> World::AddBody(glm::vec3 _p, glm::vec3 _o)
   bodies.push_back(std::make_shared<Body>(_p, _o));
   bodies.back()->selfRef = bodies.back();
   return std::weak_ptr<Body>(bodies.back());
+}
+
+void World::KillBody(std::weak_ptr<Body> _body)
+{
+  for (auto b = bodies.begin(); b != bodies.end(); b++)
+  {
+    //operator== compares the raw pointers, so this should be
+    //pretty quick - although with some dereferences and locks
+    if ((*b) == _body.lock())
+    {
+      bodies.erase(b);
+      return;
+    }
+  }
+  //TODO - Throw error for trying to remove non-existant body
 }

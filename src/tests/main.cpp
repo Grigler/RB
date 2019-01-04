@@ -26,7 +26,7 @@ TEST(WorldBehaviour, WorldKillResultsInInvalidBodyPtr)
   RB::World w;
   std::weak_ptr<RB::Body> b = w.AddBody();
   EXPECT_FALSE(b.expired());
-  w.Kill();
+  w.KillWorld();
   ASSERT_TRUE(b.expired());
 }
 TEST(WorldBehaviour, WorldTick)
@@ -46,7 +46,7 @@ TEST(WorldLimits, LargeBodyCount)
     if(i % 100000 == 0) printf("\rBody: %i", i);
   }
   printf("\rBody: %i\r", BODY_NUM_LIMIT);
-  w.Kill();
+  w.KillWorld();
 }
 
 //Body Behaviour

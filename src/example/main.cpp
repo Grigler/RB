@@ -5,7 +5,9 @@
 #include <RB.h>
 
 #include "Renderer.h"
-#include "GameClock.h"
+//#include "GameClock.h"
+
+#include "Scene.h"
 
 #include <chrono>
 
@@ -20,24 +22,19 @@ int main(int argc, char **argv)
   NGL_UNUSED(argv);
 
   Renderer::Startup();
-  
-  //RB INIT
-  RB::World world;
-  std::vector<std::weak_ptr<RB::Body>> bodies;
-  for (size_t i = 0; i < 1; i++)
+
+  //Basic Scene Creation
+  Scene s;
+  for (size_t i = 0; i < 100; i++)
   {
-    bodies.push_back(world.AddBody(glm::vec3(i),glm::vec3(0)));
-    bodies.back().lock()->applyForceImpulse(glm::vec3(0.0f, -1.0f, 0.0f));
+    s.AddObject();
   }
 
   SDL_Event e;
   bool isRunning = true;
   while (isRunning)
   {
-    //Updating timer
-    GameClock::UpdateDT();
-    printf("\rFPS: %.2f\tBodies: %zu", 1.0f / GameClock::dt, bodies.size());
-    //Input
+    //Input handling
     while (SDL_PollEvent(&e))
     {
       switch (e.type)
@@ -50,23 +47,19 @@ int main(int argc, char **argv)
         {
         case SDLK_ESCAPE: isRunning = false; break;
         case SDLK_SPACE: ngl::NGLMessage::addMessage("This is a test", Colours::RED); break;
-        case SDLK_UP: for(int i = 0; i < 25; i++)bodies.push_back(world.AddBody()); break;
-        case SDLK_r: world.Kill(); bodies.clear(); break;
         }
       }
     }
     
-    //logic
-    world.Tick(GameClock::dt);
+    //Scene Update
+    s.Update();
 
     //render here
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    /*
-    for (size_t i = 0; i < bodies.size(); i++)
-    {
-      printf("B: %i\n\t%f.0f\n",i,bodies.at(i).lock()->position.y);
-    }
-    */
+
+      //Scene draw
+      s.Draw();
+
     Renderer::SwapBuffers();
     
     //shitty vsync

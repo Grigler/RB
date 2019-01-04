@@ -39,3 +39,8 @@ void Body::applyTorqueImpulse(glm::vec3 _torque)
 {
   accumulatedTorque += _torque;
 }
+
+void Body::kill()
+{
+  
+}

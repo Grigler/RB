@@ -44,8 +44,12 @@ namespace RB
 
     std::shared_ptr<AABB> boundingBox;
 
+    void kill();
+
   private:
+    //Used to easily pass 
     std::weak_ptr<Body> selfRef;
+    std::weak_ptr<Body> world;
 
   };
 
