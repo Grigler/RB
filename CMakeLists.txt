@@ -105,7 +105,6 @@ add_executable(example
   include/example/Object.h
   include/example/DrawObject.h
   
-  
   include/example/Sphere.h
   
   
@@ -116,7 +115,7 @@ add_executable(example
   src/example/Camera.cpp
   src/example/Object.cpp
   src/example/DrawObject.cpp
-  
+
   src/example/Sphere.cpp
   
   src/example/gl3w.c

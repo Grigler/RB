@@ -11,6 +11,8 @@ public:
   void Update();
 
   static glm::mat4 getVP();
+  static glm::mat4 getV();
+  static glm::mat4 getP();
 
   void setFOV(float _fov) { fov = _fov; }
   void setNear(float _n) { nearPlane = _n; }

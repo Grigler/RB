@@ -1,6 +1,7 @@
 #include "Renderer.h"
 
 #include <ngl/NGLInit.h>
+#include <ngl/ShaderLib.h>
 
 #include <iostream>
 
@@ -70,6 +71,27 @@ void Renderer::Startup()
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_MULTISAMPLE);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  //TODO - REMOVE DEBUG
+  //Creating Phong DEBUG SHADER
+  //Creating Phong Shader
+  ngl::ShaderLib *shader = ngl::ShaderLib::instance();
+  shader->createShaderProgram("Phong");
+  
+  shader->attachShader("PhongVertex", ngl::ShaderType::VERTEX);
+  shader->attachShader("PhongFragment", ngl::ShaderType::FRAGMENT);
+
+  shader->loadShaderSource("PhongVertex", "data/shaders/PhongVertex.glsl");
+  shader->loadShaderSource("PhongFragment", "data/shaders/PhongFragment.glsl");
+
+  shader->compileShader("PhongVertex");
+  shader->compileShader("PhongFragment");
+
+  shader->attachShaderToProgram("Phong", "PhongVertex");
+  shader->attachShaderToProgram("Phong", "PhongFragment");
+
+  shader->linkProgramObject("Phong");
+  //!DEBUG
 }
 
 void Renderer::ShutDown()

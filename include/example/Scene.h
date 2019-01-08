@@ -5,7 +5,6 @@
 #include <memory>
 #include <glm/vec3.hpp>
 
-#define STRINGIFY(A) (#A)
 
 namespace RB { class World; }
 

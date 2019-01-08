@@ -30,16 +30,24 @@ glm::mat4 Camera::getVP()
   //Just returning identity matrix if there is no camera
   if (singleton == nullptr) return glm::mat4(1);
 
+  return getV() * getP();
+}
 
-  glm::mat4 proj =
-    glm::perspectiveFov(singleton->fov,
-      Renderer::getScreenWidth(), Renderer::getScreenHeight(),
-      singleton->nearPlane, singleton->farPlane);
+glm::mat4 Camera::getV()
+{
+  if (singleton == nullptr) return glm::mat4(1);
 
-  glm::mat4 view = 
+  return
     glm::lookAtRH(singleton->transform.pos,
       singleton->transform.pos + singleton->transform.getForward(),
       singleton->transform.getUp());
+}
+glm::mat4 Camera::getP()
+{
+  if (singleton == nullptr) return glm::mat4(1);
 
-  return view * proj;
+  return 
+    glm::perspectiveFov(singleton->fov,
+      Renderer::getScreenWidth(), Renderer::getScreenHeight(),
+      singleton->nearPlane, singleton->farPlane);
 }
