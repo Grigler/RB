@@ -5,9 +5,9 @@
 #include <RB.h>
 
 #include "Renderer.h"
-//#include "GameClock.h"
-
+#include "Camera.h"
 #include "Scene.h"
+#include "Sphere.h"
 
 #include <chrono>
 
@@ -27,8 +27,10 @@ int main(int argc, char **argv)
   Scene s;
   for (size_t i = 0; i < 100; i++)
   {
-    s.AddObject();
+    s.AddObject<Sphere>();
   }
+
+  std::weak_ptr<Camera> camera = s.AddObject<Camera>();
 
   SDL_Event e;
   bool isRunning = true;
@@ -50,7 +52,7 @@ int main(int argc, char **argv)
         }
       }
     }
-    
+
     //Scene Update
     s.Update();
 

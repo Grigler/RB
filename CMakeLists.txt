@@ -99,16 +99,25 @@ add_executable(example
 
   include/example/Renderer.h
   include/example/GameClock.h
+  include/example/Transform.h
+  include/example/Camera.h
   include/example/Scene.h
   include/example/Object.h
   include/example/DrawObject.h
   
   
+  include/example/Sphere.h
+  
+  
   src/example/Renderer.cpp
   src/example/GameClock.cpp
   src/example/Scene.cpp
+  src/example/Transform.cpp
+  src/example/Camera.cpp
   src/example/Object.cpp
   src/example/DrawObject.cpp
+  
+  src/example/Sphere.cpp
   
   src/example/gl3w.c
 )

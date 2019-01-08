@@ -12,6 +12,11 @@ public:
   static void Startup();
   static void ShutDown();
 
+  //Have to deal with conversion of int to float to play nice with glm
+  //it's that or dirty casting in some of the renderer functions
+  static float getScreenWidth() { return screenRect.w; }
+  static float getScreenHeight() { return screenRect.h; }
+
 private:
   static SDL_Rect screenRect;
   static SDL_Window *window;

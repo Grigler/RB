@@ -6,6 +6,8 @@
 #include "GameClock.h"
 #include "Object.h"
 
+std::unique_ptr<RB::World> Scene::world;
+
 Scene::Scene()
 {
   world = std::make_unique<RB::World>();
