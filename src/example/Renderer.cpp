@@ -13,6 +13,10 @@ void Renderer::SwapBuffers()
 {
   SDL_GL_SwapWindow(window);
 }
+void Renderer::ClearBuffers()
+{
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
 
 void Renderer::Startup()
 {
@@ -73,6 +77,12 @@ void Renderer::Startup()
   glClearColor(0.33f, 0.33f, 0.33f, 1.0f);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_MULTISAMPLE);
+  //TODO - sort objects by distance to camera
+  //Not sorting by distance from camera for simplicity
+  //so expect depth occlusion issues
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   //TODO - REMOVE DEBUG

@@ -129,3 +129,6 @@ target_include_directories(example PUBLIC
 
 target_link_libraries(example rb SDL2 SDL2main optimized NGL)
 target_link_libraries(example debug NGLD)
+
+#Moving data directory into build directory for VS ease
+file(COPY ${PROJECT_SOURCE_DIR}/data DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/data)

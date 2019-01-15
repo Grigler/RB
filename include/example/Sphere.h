@@ -11,6 +11,8 @@ public:
   void Update();
   void Draw();
 
+  glm::vec4 colour;
+
 private:
 
 

@@ -8,6 +8,7 @@ class Renderer
 {
 public:
   static void SwapBuffers();
+  static void ClearBuffers();
 
   static void Startup();
   static void ShutDown();

@@ -11,7 +11,10 @@
 void Sphere::onCreation()
 {
   //ngl::VAOPrimitives::createSphere("sphereobj", 1.0f, 4);
-  ngl::VAOPrimitives::instance()->createSphere("sphere", 2.0f, 32);
+  if (ngl::VAOPrimitives::instance()->getVAOFromName("sphere") == nullptr)
+  {
+    ngl::VAOPrimitives::instance()->createSphere("sphere", 2.0f, 64);
+  }
 }
 
 void Sphere::Update()
@@ -40,6 +43,8 @@ void Sphere::Draw()
       //set uniforms
       //shader->setUniform("MV", ngl::mv);
       shader->setUniformMatrix4fv("MVP", &mvp[0][0]);
+      shader->setUniform("colour", colour.r, colour.g, colour.b, colour.a);
+
       //shader->setUniform("normalMatrix",
       //  glm::transpose(glm::inverse(transform.getModelMat())));
 

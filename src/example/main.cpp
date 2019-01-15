@@ -19,7 +19,7 @@ int main(int argc, char **argv)
   Renderer::Startup();
 
   //Basic Scene Creation
-  Scene s;
+  Scene scene;
   /*
   for (size_t i = 0; i < 1; i++)
   {
@@ -27,13 +27,15 @@ int main(int argc, char **argv)
   }
   */
 
-  std::weak_ptr<Camera> camera = s.AddObject<Camera>();
+  std::weak_ptr<Camera> camera = scene.AddObject<Camera>();
 
   std::weak_ptr<Sphere> sphereRight = 
-    s.AddObject<Sphere>(glm::vec3(-10.0f, 0.0f, -20.0f), true);
+    scene.AddObject<Sphere>(glm::vec3(-10.0f, 0.0f, -20.0f), true);
+  sphereRight.lock()->colour = glm::vec4(0.0f, 1.0f, 0.0f, 0.5f);
   std::weak_ptr<Sphere> sphereLeft =
-    s.AddObject<Sphere>(glm::vec3(10.0f, 0.0f, -20.0f), true);
-  
+    scene.AddObject<Sphere>(glm::vec3(10.0f, 0.0f, -20.0f), true);
+  sphereLeft.lock()->colour = glm::vec4(1.0f, 0.0f, 0.0f, 0.5f);
+
   //Setup initial test collision
   sphereRight.lock()->body.lock()->applyForceImpulse(glm::vec3(5.0f, 5.0f, 0.0f));
   sphereLeft.lock()->body.lock()->applyForceImpulse(glm::vec3(-5.0f, 5.0f, 0.0f));
@@ -62,14 +64,12 @@ int main(int argc, char **argv)
     }
 
     //Scene Update
-    if(isUpdating) s.Update();
+    if(isUpdating) scene.Update();
 
     //render here
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-      //Scene draw
-      s.Draw();
-
+    Renderer::ClearBuffers();
+    //Scene draw
+    scene.Draw();
     Renderer::SwapBuffers();
     
     //shitty vsync
