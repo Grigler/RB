@@ -6,9 +6,9 @@
 class Camera : public Object
 {
 public:
-  Camera();
 
   void Update();
+  void onCreation();
 
   static glm::mat4 getVP();
   static glm::mat4 getV();

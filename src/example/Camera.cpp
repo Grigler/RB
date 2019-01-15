@@ -7,7 +7,7 @@
 
 Camera *Camera::singleton = nullptr;
 
-Camera::Camera()
+void Camera::onCreation()
 {
   transform.pos = glm::vec3(0);
   transform.rot = glm::vec3(0);
@@ -16,7 +16,7 @@ Camera::Camera()
   nearPlane = 0.001f;
   farPlane = 1000000.0f;
 
-  if(singleton == nullptr) singleton = this;
+  if (singleton == nullptr) singleton = this;
 }
 
 void Camera::Update()

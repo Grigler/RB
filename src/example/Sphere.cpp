@@ -8,11 +8,8 @@
 #include <ngl/NGLInit.h>
 #include <ngl/ShaderLib.h>
 
-Sphere::Sphere()
+void Sphere::onCreation()
 {
-  std::weak_ptr<RB::Body> b = Scene::world->AddBody();
-  AssignBody(b);
-
   //ngl::VAOPrimitives::createSphere("sphereobj", 1.0f, 4);
   ngl::VAOPrimitives::instance()->createSphere("sphere", 2.0f, 4);
 }

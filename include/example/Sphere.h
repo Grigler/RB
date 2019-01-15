@@ -6,8 +6,8 @@
 class Sphere : public Object
 {
 public:
-  Sphere::Sphere();
 
+  void onCreation();
   void Update();
   void Draw();
 

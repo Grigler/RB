@@ -23,7 +23,9 @@ void Scene::Update()
 
   //TODO - look at the order of these two
   //Physics tick (fixed timestep - could be multiple per update)
-  world->Tick(GameClock::dt);
+  
+  //TEMPORARY DEBUG COMMENTED OUT
+  //world->Tick(GameClock::dt);
 
   //Objects tick - one per frame
   for (auto o = objects.begin(); o != objects.end(); o++)
@@ -37,18 +39,4 @@ void Scene::Draw()
   {
     (*o)->Draw();
   }
-}
-
-std::weak_ptr<Object> Scene::AddObject()
-{
-  objects.push_back(std::make_shared<Object>(world->AddBody()));
-  return objects.back();
-}
-std::weak_ptr<Object> Scene::AddObject(glm::vec3 _pos)
-{
-  objects.push_back(std::make_shared<Object>());
-  std::weak_ptr<RB::Body> b = world->AddBody();
-  b.lock()->position = _pos;
-  objects.back()->AssignBody(b);
-  return objects.back();
 }
