@@ -30,7 +30,7 @@ glm::mat4 Transform::getRotationMat()
 
 glm::vec3 Transform::getUp()
 {
-  return glm::normalize((glm::vec3)(getRotationMat() * glm::vec4(forward,1)));
+  return glm::normalize((glm::vec3)(getRotationMat() * glm::vec4(up,1)));
 }
 glm::vec3 Transform::getForward()
 {

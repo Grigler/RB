@@ -32,6 +32,7 @@ namespace RB
 
     static float timeAccumulator;
     static float fixedTimestep;
+    static float maxTimeStep;
   };
 
 }

@@ -11,7 +11,7 @@
 void Sphere::onCreation()
 {
   //ngl::VAOPrimitives::createSphere("sphereobj", 1.0f, 4);
-  ngl::VAOPrimitives::instance()->createSphere("sphere", 2.0f, 4);
+  ngl::VAOPrimitives::instance()->createSphere("sphere", 2.0f, 32);
 }
 
 void Sphere::Update()
@@ -27,7 +27,7 @@ void Sphere::Draw()
   ngl::AbstractVAO *vao = ngl::VAOPrimitives::instance()->getVAOFromName("sphere");
   //get and bind shader
   ngl::ShaderLib *shader = ngl::ShaderLib::instance();
-  (*shader)["Phong"]->use();
+  (*shader)["Basic"]->use();
 
   //bind vao
   vao->bind();
@@ -39,7 +39,7 @@ void Sphere::Draw()
 
       //set uniforms
       //shader->setUniform("MV", ngl::mv);
-      //shader->setUniform("MVP", mvp);
+      shader->setUniformMatrix4fv("MVP", &mvp[0][0]);
       //shader->setUniform("normalMatrix",
       //  glm::transpose(glm::inverse(transform.getModelMat())));
 

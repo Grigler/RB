@@ -29,8 +29,16 @@ int main(int argc, char **argv)
 
   std::weak_ptr<Camera> camera = s.AddObject<Camera>();
 
-  s.AddObject<Sphere>(glm::vec3(0.0f, 0.0f, -2.0f), true);
-  s.AddObject<Sphere>(glm::vec3(0.0f, 0.0f, 2.0f), true);
+  std::weak_ptr<Sphere> sphereRight = 
+    s.AddObject<Sphere>(glm::vec3(-10.0f, 0.0f, -20.0f), true);
+  std::weak_ptr<Sphere> sphereLeft =
+    s.AddObject<Sphere>(glm::vec3(10.0f, 0.0f, -20.0f), true);
+  
+  //Setup initial test collision
+  sphereRight.lock()->body.lock()->applyForceImpulse(glm::vec3(5.0f, 5.0f, 0.0f));
+  sphereLeft.lock()->body.lock()->applyForceImpulse(glm::vec3(-5.0f, 5.0f, 0.0f));
+
+  bool isUpdating = false;
 
   SDL_Event e;
   bool isRunning = true;
@@ -48,12 +56,13 @@ int main(int argc, char **argv)
         switch(e.key.keysym.sym)
         {
         case SDLK_ESCAPE: isRunning = false; break;
+        case SDLK_r: isUpdating = !isUpdating; break;
         }
       }
     }
 
     //Scene Update
-    s.Update();
+    if(isUpdating) s.Update();
 
     //render here
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

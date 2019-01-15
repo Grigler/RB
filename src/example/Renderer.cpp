@@ -22,12 +22,15 @@ void Renderer::Startup()
   }
 
   SDL_GetDisplayBounds(0, &screenRect);
+  //Manually setting to half screen size
+  screenRect.w /= 2;
+  screenRect.h /= 2;
 
   window = SDL_CreateWindow("RB",
     SDL_WINDOWPOS_CENTERED,
     SDL_WINDOWPOS_CENTERED,
-    screenRect.w / 2,
-    screenRect.h / 2,
+    screenRect.w,
+    screenRect.h,
     SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
   );
 
@@ -91,7 +94,27 @@ void Renderer::Startup()
   shader->attachShaderToProgram("Phong", "PhongFragment");
 
   shader->linkProgramObject("Phong");
+  
+  //Creating Basic Shader
+  shader->createShaderProgram("Basic");
+
+  shader->attachShader("BasicVertex", ngl::ShaderType::VERTEX);
+  shader->attachShader("BasicFragment", ngl::ShaderType::FRAGMENT);
+
+  shader->loadShaderSource("BasicVertex", "data/shaders/BasicVertex.glsl");
+  shader->loadShaderSource("BasicFragment", "data/shaders/BasicFragment.glsl");
+
+  shader->compileShader("BasicVertex");
+  shader->compileShader("BasicFragment");
+  
+  shader->attachShaderToProgram("Basic", "BasicVertex");
+  shader->attachShaderToProgram("Basic", "BasicFragment");
+
+  shader->linkProgramObject("Basic");
+  
   //!DEBUG
+
+
 }
 
 void Renderer::ShutDown()

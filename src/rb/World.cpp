@@ -14,6 +14,7 @@ std::unique_ptr<BVH> World::bvh;
 
 float World::timeAccumulator = 0.0f;
 float World::fixedTimestep = 1.0f/120.0f;
+float World::maxTimeStep = 0.25f;
 
 World::World()
 {
@@ -32,7 +33,7 @@ World::~World()
 void World::Tick(float _dt)
 {
   //Adding delta time to static accumulator
-  if (_dt > 0.25f) _dt = 0.25f;
+  _dt = glm::min(_dt, maxTimeStep);
   timeAccumulator += _dt;
 
   //Consuming frame time with multiple fixed sub-steps

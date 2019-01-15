@@ -52,7 +52,7 @@ std::weak_ptr<T> Scene::AddObject(glm::vec3 _pos, bool isRB)
   //Calling onCreation for the object
   ret->onCreation();
   
-  return std::weak_ptr<T>();
+  return std::weak_ptr<T>(ret);
 }
 
 #endif

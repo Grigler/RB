@@ -12,7 +12,7 @@ void Camera::onCreation()
   transform.pos = glm::vec3(0);
   transform.rot = glm::vec3(0);
   //Arbitrarily small/large values to avoid clipping issues for now
-  fov = 60.0f;
+  fov = glm::radians(60.0f);
   nearPlane = 0.001f;
   farPlane = 1000000.0f;
 

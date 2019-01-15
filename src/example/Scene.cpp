@@ -25,7 +25,7 @@ void Scene::Update()
   //Physics tick (fixed timestep - could be multiple per update)
   
   //TEMPORARY DEBUG COMMENTED OUT
-  //world->Tick(GameClock::dt);
+  world->Tick(GameClock::dt);
 
   //Objects tick - one per frame
   for (auto o = objects.begin(); o != objects.end(); o++)
