@@ -9,6 +9,8 @@ SDL_Rect Renderer::screenRect;
 SDL_Window *Renderer::window;
 SDL_GLContext Renderer::glContext;
 
+bool Renderer::isDrawingDebug = false;
+
 void Renderer::SwapBuffers()
 {
   SDL_GL_SwapWindow(window);
@@ -82,7 +84,9 @@ void Renderer::Startup()
   //so expect depth occlusion issues
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+  //Setting linewidth for debug rendering
+  glLineWidth(4.0f);
+  
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   //TODO - REMOVE DEBUG
@@ -121,7 +125,6 @@ void Renderer::Startup()
   shader->attachShaderToProgram("Basic", "BasicFragment");
 
   shader->linkProgramObject("Basic");
-  
   //!DEBUG
 
 

@@ -18,6 +18,8 @@ public:
   static float getScreenWidth() { return screenRect.w; }
   static float getScreenHeight() { return screenRect.h; }
 
+  static bool isDrawingDebug;
+
 private:
   static SDL_Rect screenRect;
   static SDL_Window *window;

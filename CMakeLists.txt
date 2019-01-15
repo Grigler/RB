@@ -136,6 +136,5 @@ target_link_libraries(example debug NGLD)
 
 add_custom_command(TARGET example PRE_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_directory
-  ${PROJECT_SOURCE_DIR}/data ${CMAKE_BINARY_DIR}/data)
-
-
+  ${PROJECT_SOURCE_DIR}/data ${CMAKE_BINARY_DIR}/data
+)

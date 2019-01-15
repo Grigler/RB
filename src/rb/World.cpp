@@ -47,7 +47,16 @@ void World::Tick(float _dt)
     }
 
     //Broadphase
-
+    for (auto i = bodies.begin(); i != bodies.end(); i++)
+    {
+      std::weak_ptr<AABB> ret = bvh->CheckAgainst((*i)->boundingBox);
+      if (!ret.expired() && !ret.lock()->parent.expired())
+      {
+        //passed test
+        //re.lock()->parent and (*i) are both
+      }
+    }
+    
 
     //Narrowphase
 

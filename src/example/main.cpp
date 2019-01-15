@@ -59,6 +59,15 @@ int main(int argc, char **argv)
         {
         case SDLK_ESCAPE: isRunning = false; break;
         case SDLK_r: isUpdating = !isUpdating; break;
+        case SDLK_BACKSPACE: Renderer::isDrawingDebug = !Renderer::isDrawingDebug; break;
+        case SDLK_EQUALS:
+          sphereLeft.lock()->colour.a += 0.2f;
+          sphereRight.lock()->colour.a += 0.2f;
+          break;
+        case SDLK_MINUS:
+          sphereLeft.lock()->colour.a -= 0.2f;
+          sphereRight.lock()->colour.a -= 0.2f;
+          break;
         }
       }
     }

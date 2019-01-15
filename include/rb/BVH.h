@@ -26,7 +26,9 @@ namespace RB
     //Prunes BVs and then builds tree
     void Rebuild();
 
-    bool CheckAgainst(std::weak_ptr<AABB> _against);
+    //bool CheckAgainst(std::weak_ptr<AABB> _against);
+    std::weak_ptr<AABB> CheckAgainst(std::weak_ptr<AABB> _against);
+
 
     void AddAABB(std::weak_ptr<AABB> _aabb);
     void AddAABB(AABB &_aabb);

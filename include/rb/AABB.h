@@ -13,6 +13,7 @@ namespace RB
   {
     friend class Body;
     friend class BVH;
+    friend class World;
   public:
     //Doesn't parent to anything
     AABB(glm::vec3 _min, glm::vec3 _max);

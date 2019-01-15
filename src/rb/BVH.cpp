@@ -51,6 +51,7 @@ void BVH::Rebuild()
 
 }
 
+/*
 bool BVH::CheckAgainst(std::weak_ptr<AABB> _against)
 {
   std::weak_ptr<BVHNode> _curr = root;
@@ -75,6 +76,38 @@ bool BVH::CheckAgainst(std::weak_ptr<AABB> _against)
   }
   //_curr expired means that a lowest-level node has passed AABB check
   return true;
+}
+*/
+
+std::weak_ptr<AABB> BVH::CheckAgainst(std::weak_ptr<AABB> _against)
+{
+  std::weak_ptr<BVHNode> curr = root;
+  std::weak_ptr<BVHNode> prev;
+  //Making the assumption that the root BV check will always pass
+  while (!curr.expired())
+  {
+
+    if (curr.lock()->left.use_count() &&
+      curr.lock()->left->bv.lock()->CheckAgainst(*_against.lock()))
+    {
+      prev = curr;
+      curr = curr.lock()->left;
+    }
+    else if (curr.lock()->right.use_count() &&
+      curr.lock()->right->bv.lock()->CheckAgainst(*_against.lock()))
+    {
+      prev = curr;
+      curr = curr.lock()->right;
+    }
+    else
+    {
+      //Returning empty weak_ptr (expired() == true)
+      return std::weak_ptr<AABB>();
+    }
+  }
+  //curr expired means that a lowest-level node has passed AABB check
+  //returning previous _curr
+  return curr.lock()->bv;
 }
 
 void BVH::AddAABB(std::weak_ptr<AABB> _aabb)

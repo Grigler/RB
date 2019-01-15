@@ -2,6 +2,7 @@
 #define SPHERE_H_
 
 #include "Object.h"
+#include <ngl/VAOPrimitives.h>
 
 class Sphere : public Object
 {
@@ -14,7 +15,7 @@ public:
   glm::vec4 colour;
 
 private:
-
+  static std::unique_ptr<ngl::AbstractVAO> bvVAO;
 
 };
 
