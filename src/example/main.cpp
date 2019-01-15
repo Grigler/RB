@@ -8,6 +8,7 @@
 #include "Camera.h"
 #include "Scene.h"
 #include "Sphere.h"
+#include "GameClock.h"
 
 #include <chrono>
 
@@ -72,8 +73,10 @@ int main(int argc, char **argv)
       }
     }
 
-    //Scene Update
+    printf("fps: %3f\r", (1.0f/GameClock::dt));
+
     if(isUpdating) scene.Update();
+    else GameClock::UpdateDT(); //should still update dt
 
     //render here
     Renderer::ClearBuffers();

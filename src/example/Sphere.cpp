@@ -64,13 +64,14 @@ void Sphere::Draw()
     glDisable(GL_DEPTH_TEST);
     //generating BV verts
     glm::vec3 minLS = body.lock()->boundingBox->getLocalMin();
-    glm::vec3 extentLS = -minLS + body.lock()->boundingBox->getLocalMax();
+    glm::vec3 extentLS = -minLS + (body.lock()->boundingBox->getLocalMax());
 
     glm::vec3 ex = glm::vec3(extentLS.x, 0.0f, 0.0f);
     glm::vec3 ey = glm::vec3(0.0f, extentLS.y, 0.0f);
     glm::vec3 ez = glm::vec3(0.0f, 0.0f, extentLS.z);
-
     
+    //This is disgusting and could be done in a geometry shader -
+    //depends where you want to shovel your shit really
     std::array<glm::vec3,24> lines = {
       minLS, minLS + ex,
       minLS + ex, minLS + ex + ez,
