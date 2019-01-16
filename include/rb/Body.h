@@ -36,6 +36,7 @@ namespace RB
     glm::mat3 getRotationMatrix3() { return glm::toMat3(orientation); }
     glm::mat4 getRotationMatrix4() { return glm::toMat4(orientation); }
     glm::vec3 getRotationEuler() { return glm::eulerAngles(orientation); }
+    glm::mat4 getModelMat();
 
     void applyForceImpulse(glm::vec3 _force);
     void applyForceImpulseAtLocation(glm::vec3 _force, glm::vec3 _localLocation);

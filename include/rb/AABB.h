@@ -25,13 +25,17 @@ namespace RB
     static bool Check(AABB _l, AABB _r);
     bool CheckAgainst(AABB _other);
 
-    void Update(glm::mat4 _bodyOrientation);
+    //Updates with a given rotation matrix
+    void Update(glm::mat4 _transform);
+
 
     glm::vec3 getWorldMin() { return worldMin; }
     glm::vec3 getWorldMax() { return worldMax; }
     glm::vec3 getLocalMin() { return localMin; }
     glm::vec3 getLocalMax() { return localMax; }
 
+    //True if it has been deemed as colliding this update
+    bool collisionFlag;
   private:
     //Initialised and never changed - used to orient
     glm::vec3 localMin = glm::vec3(0.0f);
@@ -39,6 +43,8 @@ namespace RB
 
     glm::vec3 worldMin = glm::vec3(0.0f);
     glm::vec3 worldMax = glm::vec3(0.0f);
+
+    
 
     std::weak_ptr<Body> parent;
   };

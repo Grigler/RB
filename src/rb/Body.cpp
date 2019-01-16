@@ -20,6 +20,16 @@ Body::Body(glm::vec3 _position, glm::quat _orientation,
   World::bvh.get()->AddAABB(boundingBox);
 }
 
+glm::mat4 Body::getModelMat()
+{
+  //Allows a hierarchy to be added easier in future
+  glm::mat4 from = glm::mat4(1);
+  glm::mat4 t = glm::translate(from, position);
+  glm::mat4 r = glm::toMat4(orientation);
+  //Assuming now scale
+  return t * r;
+}
+
 void Body::applyForceImpulse(glm::vec3 _force)
 {
   accumulatedForce += _force;

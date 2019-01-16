@@ -30,14 +30,15 @@ int main(int argc, char **argv)
 
   std::weak_ptr<Camera> camera = scene.AddObject<Camera>();
 
+
+  //Setting up initial test collision - TEMPORARY
   std::weak_ptr<Sphere> sphereRight = 
-    scene.AddObject<Sphere>(glm::vec3(-10.0f, 0.0f, -20.0f), true);
+    scene.AddObject<Sphere>(glm::vec3(-10.0f, 5.0f, -20.0f), true);
   sphereRight.lock()->colour = glm::vec4(0.0f, 1.0f, 0.0f, 0.5f);
   std::weak_ptr<Sphere> sphereLeft =
-    scene.AddObject<Sphere>(glm::vec3(10.0f, 0.0f, -20.0f), true);
+    scene.AddObject<Sphere>(glm::vec3(10.0f, 5.0f, -20.0f), true);
   sphereLeft.lock()->colour = glm::vec4(1.0f, 0.0f, 0.0f, 0.5f);
 
-  //Setup initial test collision
   sphereRight.lock()->body.lock()->applyForceImpulse(glm::vec3(5.0f, 5.0f, 0.0f));
   sphereLeft.lock()->body.lock()->applyForceImpulse(glm::vec3(-5.0f, 5.0f, 0.0f));
 
@@ -73,7 +74,7 @@ int main(int argc, char **argv)
       }
     }
 
-    printf("fps: %3f\r", (1.0f/GameClock::dt));
+    //printf("fps: %3f\r", (1.0f/GameClock::dt));
 
     if(isUpdating) scene.Update();
     else GameClock::UpdateDT(); //should still update dt

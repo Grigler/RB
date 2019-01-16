@@ -43,20 +43,17 @@ void World::Tick(float _dt)
     //Itegration
     for (auto i = bodies.begin(); i != bodies.end(); i++)
     {
+      //Reset collision flag - set in broadphase
+      (*i)->boundingBox->collisionFlag = false;
       IntegratorFactory::getGlobalFunction()(*i, fixedTimestep);
+      //Updating bv for broadphase
+      (*i)->boundingBox->Update((*i)->getModelMat());
     }
 
     //Broadphase
-    for (auto i = bodies.begin(); i != bodies.end(); i++)
-    {
-      std::weak_ptr<AABB> ret = bvh->CheckAgainst((*i)->boundingBox);
-      if (!ret.expired() && !ret.lock()->parent.expired())
-      {
-        //passed test
-        //re.lock()->parent and (*i) are both
-      }
-    }
     
+    //DEBUG
+    std::vector<broadColPair> b = BroadphaseBruteForce();    
 
     //Narrowphase
 
@@ -99,4 +96,27 @@ void World::KillBody(std::weak_ptr<Body> _body)
     }
   }
   //TODO - Throw error for trying to remove non-existant body
+}
+
+std::vector<broadColPair> World::BroadphaseBruteForce()
+{
+  std::vector<broadColPair> ret;
+  for (auto l = bodies.begin(); l != bodies.end(); l++)
+  {
+    std::shared_ptr<AABB> lbv = (*l)->boundingBox;
+    for (auto r = std::next(l); r != bodies.end(); r++)
+    {
+      std::shared_ptr<AABB> rbv = (*r)->boundingBox;
+      
+      if (AABB::Check(*lbv, *rbv))
+      {
+        //Creating tuple of relevant bodies
+        ret.push_back({(*l),(*r)});
+        //Setting flags for debug rendering
+        lbv->collisionFlag = true;
+        rbv->collisionFlag = true;
+      }
+    }
+  }
+  return ret;
 }

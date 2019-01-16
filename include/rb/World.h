@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <list>
+#include <vector>
 
 #include "glm/glm.hpp"
 
@@ -10,6 +11,12 @@ namespace RB
 {
   class Body;
   class BVH;
+
+  //Simple tuple struct for ease
+  struct broadColPair
+  {
+    std::weak_ptr<Body> l, r;
+  };
 
   class World
   {
@@ -30,6 +37,11 @@ namespace RB
   private:
     std::list< std::shared_ptr<Body> > bodies;
 
+    
+    //Used for debugging and comparison purposes
+    std::vector<broadColPair> BroadphaseBruteForce();
+
+    //Static variables for sub-stepping fixed timestep
     static float timeAccumulator;
     static float fixedTimestep;
     static float maxTimeStep;

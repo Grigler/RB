@@ -104,7 +104,16 @@ void Sphere::Draw()
       bvVAO->setVertexAttributePointer(0, 3, GL_FLOAT, 0, 0);
       //uniforms
       //shader->setUniform("colour", 1.0f, 0.0f, 1.0f, 1.0f);
-      shader->setUniform("colour", colour.r, colour.g, colour.b, 1.0f);
+      if (body.lock()->boundingBox->collisionFlag)
+      {
+        shader->setUniform("colour", 1.0f, 0.0f, 0.0f, 1.0f);
+      }
+      else
+      {
+        shader->setUniform("colour", 0.0f, 1.0f, 0.0f, 1.0f);
+      }
+      //shader->setUniform("colour", colour.r, colour.g, colour.b, 1.0f);
+
       shader->setUniformMatrix4fv("MVP",
         &mvp[0][0]);
 

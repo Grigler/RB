@@ -11,25 +11,28 @@ AABB::AABB(glm::vec3 _min, glm::vec3 _max)
 {
   localMin = _min; localMax = _max;
   worldMin = _min; worldMax = _max;
+  collisionFlag = false;
 }
 //Derives bounds from parent
 AABB::AABB(std::weak_ptr<Body> _parent)
 {
   parent = _parent;
+  collisionFlag = false;
 }
 AABB::AABB(std::weak_ptr<Body> _parent, glm::vec3 _min, glm::vec3 _max)
 {
   parent = _parent;
   localMin = _min; localMax = _max;
   worldMin = _min; worldMax = _max;
+  collisionFlag = false;
 }
 
-void AABB::Update(glm::mat4 _bodyOrientation)
+void AABB::Update(glm::mat4 _transform)
 {
   //Orienting local min/max by body orientation
   glm::vec4 rMin, rMax;
-  rMin = glm::vec4(localMin,1.0f) * _bodyOrientation;
-  rMax = glm::vec4(localMax,1.0f) * _bodyOrientation;
+  rMin = _transform * glm::vec4(localMin,1.0f);
+  rMax = _transform * glm::vec4(localMax,1.0f);
 
   //Finding min/max values for oriented
   glm::vec3 newWorldMin = rMin;
@@ -45,7 +48,7 @@ void AABB::Update(glm::mat4 _bodyOrientation)
   worldMax = newWorldMax;
 }
 
-//TODO
+
 bool AABB::CheckAgainst(AABB _other)
 {
   bool ret = true;
