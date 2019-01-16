@@ -13,7 +13,7 @@
 #define INTERNAL_REG_INTEGRATOR(T) \
 namespace RB::Integrators\
 {\
-  static std::string T = std::string(#T);\
+  static constexpr char *T = #T;\
 }\
 
 namespace RB

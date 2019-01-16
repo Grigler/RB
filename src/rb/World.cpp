@@ -5,6 +5,12 @@
 #include <IntegratorFactory.h>
 
 #include <ForwardEuler.h>
+#include <SemiImplicitEuler.h>
+#include <RK4.h>
+
+#include <Constraint.h>
+
+#include <GreedyCollider.h>
 
 #include <chrono>
 
@@ -19,8 +25,13 @@ float World::maxTimeStep = 0.25f;
 World::World()
 {
   bvh = std::make_unique<BVH>();
-  //Registering and setting forward euler as a default integrator on world start-up
+
+  //World registers all default integrators on creation
   IntegratorFactory::registerFunc(Integrators::ForwardEuler, ForwardEuler::integrate);
+  IntegratorFactory::registerFunc(Integrators::SemiImplicitEuler, SemiImplicitEuler::integrate);
+  IntegratorFactory::registerFunc(Integrators::RK4, RK4::integrate);
+
+  //Sets ForwardEuler integrator as default
   IntegratorFactory::setGlobal(Integrators::ForwardEuler);
 }
 World::~World()
@@ -45,6 +56,7 @@ void World::Tick(float _dt)
     {
       //Reset collision flag - set in broadphase
       (*i)->boundingBox->collisionFlag = false;
+      //Always uses global function from factory - user can set their own
       IntegratorFactory::getGlobalFunction()(*i, fixedTimestep);
       //Updating bv for broadphase
       (*i)->boundingBox->Update((*i)->getModelMat());
@@ -53,13 +65,32 @@ void World::Tick(float _dt)
     //Broadphase
     
     //DEBUG
+    //TODO - cache this vec at max size and populate each update - save alloc time
     std::vector<broadColPair> b = BroadphaseBruteForce();    
 
     //Narrowphase
+    for (auto cp = b.begin(); cp != b.end(); cp++)
+    {
+      auto lCol = cp->l.lock()->collider;
+      auto rCol = cp->r.lock()->collider;
+
+      switch (lCol->type & rCol->type)
+      {
+      case ColliderType::Sphere & ColliderType::Sphere:
+        
+        //Sphere-Sphere collision only ever returns 1 contact
+        std::shared_ptr<Constraint> c = 
+          GreedyCollider::SphereSphere(*lCol, *rCol);
+        
+        //An empty shared_ptr means that there was no collision
+        if (c.use_count()) constraints.push_back(c);
+        break;
+      }
+    }
 
 
     //Collision solving
-    
+    //Hand constraints ref to LCPFactory::Global
 
     //Reducing accumulator by fixed timestep
     timeAccumulator -= fixedTimestep;

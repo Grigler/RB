@@ -11,6 +11,7 @@ namespace RB
 {
   class Body;
   class BVH;
+  class Constraint;
 
   //Simple tuple struct for ease
   struct broadColPair
@@ -36,7 +37,7 @@ namespace RB
 
   private:
     std::list< std::shared_ptr<Body> > bodies;
-
+    std::vector<std::shared_ptr<Constraint>> constraints;
     
     //Used for debugging and comparison purposes
     std::vector<broadColPair> BroadphaseBruteForce();
