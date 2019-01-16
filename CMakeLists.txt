@@ -41,6 +41,10 @@ add_library(rb STATIC
   include/rb/SemiImplicitEuler.h
   include/rb/RK4.h
 
+  include/rb/AbstractCollider.h
+  include/rb/GreedyCollider.h
+  include/rb/SphereCollider.h
+
   src/rb/World.cpp
   src/rb/Body.cpp
   src/rb/AABB.cpp
@@ -50,6 +54,10 @@ add_library(rb STATIC
   src/rb/ForwardEuler.cpp
   src/rb/SemiImplicitEuler.cpp
   src/rb/RK4.cpp
+
+  src/rb/AbstractCollider.cpp
+  src/rb/GreedyCollider.cpp
+  src/rb/SphereCollider.cpp
 )
 
 

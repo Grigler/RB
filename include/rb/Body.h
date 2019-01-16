@@ -8,6 +8,7 @@
 #include <glm/gtx/quaternion.hpp>
 
 #include <AABB.h>
+#include <AbstractCollider.h>
 
 namespace RB
 {
@@ -44,6 +45,7 @@ namespace RB
     void applyTorqueImpulse(glm::vec3 _torque);
 
     std::shared_ptr<AABB> boundingBox;
+    std::shared_ptr<AbstractCollider> collider;
 
     void kill();
 

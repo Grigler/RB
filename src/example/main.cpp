@@ -33,10 +33,11 @@ int main(int argc, char **argv)
 
   //Setting up initial test collision - TEMPORARY
   std::weak_ptr<Sphere> sphereRight = 
-    scene.AddObject<Sphere>(glm::vec3(-10.0f, 5.0f, -20.0f), true);
+    scene.AddObject<Sphere>(glm::vec3(-8.0f, 5.0f, -20.0f), true);
   sphereRight.lock()->colour = glm::vec4(0.0f, 1.0f, 0.0f, 0.5f);
+  
   std::weak_ptr<Sphere> sphereLeft =
-    scene.AddObject<Sphere>(glm::vec3(10.0f, 5.0f, -20.0f), true);
+    scene.AddObject<Sphere>(glm::vec3(8.0f, 5.0f, -20.0f), true);
   sphereLeft.lock()->colour = glm::vec4(1.0f, 0.0f, 0.0f, 0.5f);
 
   sphereRight.lock()->body.lock()->applyForceImpulse(glm::vec3(5.0f, 5.0f, 0.0f));
@@ -60,7 +61,7 @@ int main(int argc, char **argv)
         switch(e.key.keysym.sym)
         {
         case SDLK_ESCAPE: isRunning = false; break;
-        case SDLK_r: isUpdating = !isUpdating; break;
+        case SDLK_SPACE: isUpdating = !isUpdating; break;
         case SDLK_BACKSPACE: Renderer::isDrawingDebug = !Renderer::isDrawingDebug; break;
         case SDLK_EQUALS:
           sphereLeft.lock()->colour.a += 0.2f;
@@ -86,7 +87,7 @@ int main(int argc, char **argv)
     Renderer::SwapBuffers();
     
     //shitty vsync
-    //SDL_Delay(8);
+    SDL_Delay(8);
   }
 
   Renderer::ShutDown();
