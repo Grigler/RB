@@ -52,6 +52,7 @@ void World::Tick(float _dt)
   {
     //printf("! tick\n");
     //Itegration
+    //could be parallel with openMP pretty easily - CPU intensive though
     for (auto i = bodies.begin(); i != bodies.end(); i++)
     {
       //Reset collision flag - set in broadphase
