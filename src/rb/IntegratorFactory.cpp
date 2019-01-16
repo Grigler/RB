@@ -33,10 +33,6 @@ void IntegratorFactory::setGlobal(std::string _name)
   {
     m_currIntegrator = _name;
   }
-  else
-  {
-    m_currIntegrator.clear();
-  }
 }
 
 std::function<void(std::shared_ptr<Body>,float)> IntegratorFactory::getFunction(std::string _name)

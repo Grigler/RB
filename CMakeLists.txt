@@ -42,6 +42,8 @@ add_library(rb STATIC
   include/rb/RK4.h
 
   include/rb/Constraint.h
+  include/rb/LCPFactory.h
+  include/rb/LCPSolver.h
   
   include/rb/GreedyCollider.h
   include/rb/SphereCollider.h
@@ -57,7 +59,9 @@ add_library(rb STATIC
   src/rb/RK4.cpp
   
   src/rb/Constraint.cpp
-
+  src/rb/LCPFactory.cpp
+  src/rb/LCPSolver.cpp
+  
   src/rb/GreedyCollider.cpp
   src/rb/SphereCollider.cpp
 )

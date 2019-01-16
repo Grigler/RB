@@ -18,15 +18,11 @@ namespace RB::Integrators\
 
 namespace RB
 {
-  class Body;
-
   class Integrator
   {
   public:
 
   };
-
-
 }
 
 #endif
