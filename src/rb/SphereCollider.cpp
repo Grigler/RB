@@ -4,5 +4,5 @@ using namespace RB;
 
 SphereCollider::SphereCollider()
 {
-  type = ColliderType::Sphere;
+  //type = ColliderType::Sphere;
 }

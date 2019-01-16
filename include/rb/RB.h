@@ -11,4 +11,6 @@
 #include "SemiImplicitEuler.h"
 #include "RK4.h"
 
+#include "GreedyCollider.h"
+
 #endif

@@ -8,8 +8,9 @@
 #include <SemiImplicitEuler.h>
 #include <RK4.h>
 
-#include <AbstractCollider.h>
-#include <SphereCollider.h>
+#include <Constraint.h>
+
+#include <GreedyCollider.h>
 
 #include <chrono>
 
@@ -70,12 +71,26 @@ void World::Tick(float _dt)
     //Narrowphase
     for (auto cp = b.begin(); cp != b.end(); cp++)
     {
-      
+      auto lCol = cp->l.lock()->collider;
+      auto rCol = cp->r.lock()->collider;
+
+      switch (lCol->type & rCol->type)
+      {
+      case ColliderType::Sphere & ColliderType::Sphere:
+        
+        //Sphere-Sphere collision only ever returns 1 contact
+        std::shared_ptr<Constraint> c = 
+          GreedyCollider::SphereSphere(*lCol, *rCol);
+        
+        //An empty shared_ptr means that there was no collision
+        if (c.use_count()) constraints.push_back(c);
+        break;
+      }
     }
 
 
     //Collision solving
-    
+    //Hand constraints ref to LCPFactory::Global
 
     //Reducing accumulator by fixed timestep
     timeAccumulator -= fixedTimestep;

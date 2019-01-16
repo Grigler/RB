@@ -35,10 +35,14 @@ int main(int argc, char **argv)
   std::weak_ptr<Sphere> sphereRight = 
     scene.AddObject<Sphere>(glm::vec3(-8.0f, 5.0f, -20.0f), true);
   sphereRight.lock()->colour = glm::vec4(0.0f, 1.0f, 0.0f, 0.5f);
-  
+  sphereRight.lock()->body.lock()->collider = 
+    std::make_unique<RB::GreedyCollider>();
+
   std::weak_ptr<Sphere> sphereLeft =
     scene.AddObject<Sphere>(glm::vec3(8.0f, 5.0f, -20.0f), true);
   sphereLeft.lock()->colour = glm::vec4(1.0f, 0.0f, 0.0f, 0.5f);
+  sphereLeft.lock()->body.lock()->collider =
+    std::make_unique<RB::GreedyCollider>();
 
   sphereRight.lock()->body.lock()->applyForceImpulse(glm::vec3(5.0f, 5.0f, 0.0f));
   sphereLeft.lock()->body.lock()->applyForceImpulse(glm::vec3(-5.0f, 5.0f, 0.0f));

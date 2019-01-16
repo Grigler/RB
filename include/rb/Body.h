@@ -8,7 +8,7 @@
 #include <glm/gtx/quaternion.hpp>
 
 #include <AABB.h>
-#include <AbstractCollider.h>
+#include <GreedyCollider.h>
 
 namespace RB
 {
@@ -27,10 +27,12 @@ namespace RB
     glm::vec3 linearVelocity = glm::vec3(0.0f);
     glm::vec3 accumulatedForce = glm::vec3(0.0f);
     float mass = 1.0f;
+    float invMass = 1.0f; //TODO
 
     glm::vec3 angularVelocity = glm::vec3(0.0f);
     glm::vec3 accumulatedTorque = glm::vec3(0.0f);
     glm::mat3 ineritaTensor = glm::identity<glm::mat3>();
+    glm::mat3 invWorldInertiaTensor; //TODO
 
     //Helper functions
     glm::vec4 getPosition4() { return glm::vec4(position, 1); }
@@ -45,7 +47,7 @@ namespace RB
     void applyTorqueImpulse(glm::vec3 _torque);
 
     std::shared_ptr<AABB> boundingBox;
-    std::shared_ptr<AbstractCollider> collider;
+    std::shared_ptr<GreedyCollider> collider;
 
     void kill();
 
