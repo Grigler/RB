@@ -3,7 +3,7 @@
 
 //Creates a nice namespaced cstring we can access
 #define INTERNAL_REG_LCPSOLVER(T)\
-namespace RB::LCPSolver\
+namespace RB::LCPSolvers\
 {\
   static constexpr char *T = #T;\
 }\

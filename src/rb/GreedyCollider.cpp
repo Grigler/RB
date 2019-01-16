@@ -29,12 +29,10 @@ std::shared_ptr<Constraint> GreedyCollider::SphereSphere(GreedyCollider &_l, Gre
   {
     //Form constraint
     std::shared_ptr<Constraint> c = std::make_shared<Constraint>();
-    printf("pass\n");
     return c;
   }
   else
   {
-    printf("\tfail\n");
     return std::shared_ptr<Constraint>();
   }
 }

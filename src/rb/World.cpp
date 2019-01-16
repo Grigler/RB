@@ -2,13 +2,16 @@
 
 #include <BVH.h>
 #include <Body.h>
-#include <IntegratorFactory.h>
 
+#include <IntegratorFactory.h>
 #include <ForwardEuler.h>
 #include <SemiImplicitEuler.h>
 #include <RK4.h>
 
 #include <Constraint.h>
+
+#include <LCPFactory.h>
+#include <SISolver.h>
 
 #include <GreedyCollider.h>
 
@@ -33,6 +36,12 @@ World::World()
 
   //Sets ForwardEuler integrator as default
   IntegratorFactory::setGlobal(Integrators::ForwardEuler);
+
+  //World registers all default LCPSolvers on creation
+  LCPFactory::registerFunc(LCPSolvers::SISolver, SISolver::Solve);
+
+  //Sets SISolver LCPSolver as default
+  LCPFactory::setGlobal(LCPSolvers::SISolver);
 }
 World::~World()
 {
