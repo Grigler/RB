@@ -16,10 +16,12 @@ GreedyCollider::GreedyCollider()
 GreedyCollider::GreedyCollider(float _radius)
 {
   this->type = ColliderType::Sphere;
+  radius = _radius;
 }
 GreedyCollider::GreedyCollider(glm::vec3 _halfExtents)
 {
   this->type = ColliderType::OBB;
+  halfExtents = _halfExtents;
 }
 
 //TODO

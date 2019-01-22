@@ -20,7 +20,8 @@ namespace RB
   const enum CollisionType : unsigned char
   {
     SphereSphere = ColliderType::Sphere & ColliderType::Sphere,
-    SphereOBB = ColliderType::Sphere & ColliderType::OBB
+    SphereOBB = ColliderType::Sphere & ColliderType::OBB,
+    OBBOBB = ColliderType::OBB & ColliderType::OBB
   };
 
   //Contains member variables for all collider types

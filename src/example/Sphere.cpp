@@ -21,7 +21,7 @@ void Sphere::onCreation()
     bvVAO = ngl::VAOFactory::createVAO(ngl::simpleVAO, GL_LINES);
   }
 
-  body.lock()->collider = std::make_unique<RB::GreedyCollider>();
+  body.lock()->collider = std::make_unique<RB::GreedyCollider>(1.0f);
   body.lock()->CalcInertiaTensorSphere(1.0f);
   body.lock()->collider->parent = body;
 }
