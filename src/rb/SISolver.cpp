@@ -41,7 +41,7 @@ void SISolver::Solve(std::vector<std::shared_ptr<Constraint>> &_constraints)
       //calculating lambda
       float lambda = (*c)->jacDiagABInv * (relativeVelocity + b);
 
-      //clamping according to Signori conditions with accumulated lambda
+      //clamping according to Signorini conditions with accumulated lambda
       float preClamp = (*c)->appliedImpulse;
       (*c)->appliedImpulse += lambda;
       (*c)->appliedImpulse = glm::max((*c)->appliedImpulse, 0.0f);
