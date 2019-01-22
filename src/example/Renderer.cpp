@@ -29,8 +29,8 @@ void Renderer::Startup()
 
   SDL_GetDisplayBounds(0, &screenRect);
   //Manually setting to half screen size
-  screenRect.w /= 2;
-  screenRect.h /= 2;
+  screenRect.w /= 1.25f;
+  screenRect.h /= 1.25f;
 
   window = SDL_CreateWindow("RB",
     SDL_WINDOWPOS_CENTERED,

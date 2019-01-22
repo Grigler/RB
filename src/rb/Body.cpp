@@ -50,6 +50,27 @@ void Body::applyTorqueImpulse(glm::vec3 _torque)
   accumulatedTorque += _torque;
 }
 
+void Body::CalcWorldInvInertiaTensor()
+{
+  //invWorldInertiaTensor = glm::inverse(glm::toMat3(orientation) * inertiaTensor);
+  invWorldInertiaTensor =
+    glm::toMat3(orientation) * 
+    (glm::inverse(inertiaTensor)*glm::transpose(glm::toMat3(orientation)));
+}
+
+void Body::CalcInertiaTensorSphere(float _radius)
+{
+  //clearing inertia tensor
+  inertiaTensor = glm::mat3(0.0f);
+  //diag value (from https://en.wikipedia.org/wiki/List_of_moments_of_inertia)
+  float diag = 0.4f*mass*_radius*_radius;
+  for (int i = 0; i < 3; i++)
+  {
+    inertiaTensor[i][i] = diag;
+  }
+  CalcWorldInvInertiaTensor();
+}
+
 void Body::kill()
 {
   

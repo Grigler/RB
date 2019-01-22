@@ -22,8 +22,8 @@ void SISolver::Solve(std::vector<std::shared_ptr<Constraint>> &_constraints)
       //TODO - Would ideally be cached as these do not change
       glm::vec3 armL = (*c)->worldPos - l->position;
       glm::vec3 armR = (*c)->worldPos - r->position;
-      glm::vec3 tangentL = -glm::cross(armL, (*c)->normal);
-      glm::vec3 tangentR = glm::cross(armR, (*c)->normal);
+      glm::vec3 tangentL = glm::cross(armL, (*c)->normal);
+      glm::vec3 tangentR = -glm::cross(armR, (*c)->normal);
 
       //linear
       float relativeVelocity = 
@@ -35,17 +35,17 @@ void SISolver::Solve(std::vector<std::shared_ptr<Constraint>> &_constraints)
         glm::dot(tangentR, r->angularVelocity);
 
       //calculating b for linear projection
-      float beta = 0.8f; //TODO - move to static var
+      float beta = 0.1f; //TODO - move to static var
       float b = (beta / World::getFixedTimestep()) * (*c)->penetrationDepth;
 
       //calculating lambda
       float lambda = (*c)->jacDiagABInv * (relativeVelocity + b);
 
       //clamping according to Signorini conditions with accumulated lambda
-      float preClamp = (*c)->appliedImpulse;
+      lambda = glm::max((*c)->appliedImpulse+lambda,0.0f) - (*c)->appliedImpulse;
       (*c)->appliedImpulse += lambda;
-      (*c)->appliedImpulse = glm::max((*c)->appliedImpulse, 0.0f);
-      lambda = (*c)->appliedImpulse - preClamp;
+      
+
 
       //calculating impulse forces and applying to velocity
       glm::vec3 linImpulseL = lambda * (*c)->normal * l->invMass;
@@ -60,6 +60,10 @@ void SISolver::Solve(std::vector<std::shared_ptr<Constraint>> &_constraints)
       //applying angular
       l->angularVelocity += angImpulseL;
       r->angularVelocity += angImpulseR;
+      
+      //TODO - use these functions once they actually add impulse at velocity level
+      //l->applyForceImpulseAtLocation((*c)->normal*lambda, (*c)->worldPos - l->position);
+      //r->applyForceImpulseAtLocation(-(*c)->normal*lambda, (*c)->worldPos - r->position);
     }
   }
 }

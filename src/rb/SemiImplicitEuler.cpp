@@ -15,7 +15,7 @@ void SemiImplicitEuler::unregisterFunc()
 void SemiImplicitEuler::integrate(std::shared_ptr<Body> _b, float _dt)
 {
   _b->linearVelocity += _b->accumulatedForce*(1.0f / _b->mass);
-  _b->angularVelocity += _b->accumulatedTorque*glm::inverse(_b->ineritaTensor);
+  _b->angularVelocity += _b->accumulatedTorque*glm::inverse(_b->inertiaTensor);
   _b->position += _b->linearVelocity*_dt;
   //TODO - orientations
 }

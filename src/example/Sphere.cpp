@@ -20,6 +20,10 @@ void Sphere::onCreation()
     ngl::VAOPrimitives::instance()->createSphere("sphere", 1.0f, 64);
     bvVAO = ngl::VAOFactory::createVAO(ngl::simpleVAO, GL_LINES);
   }
+
+  body.lock()->collider = std::make_unique<RB::GreedyCollider>();
+  body.lock()->CalcInertiaTensorSphere(1.0f);
+  body.lock()->collider->parent = body;
 }
 
 void Sphere::Update()
@@ -62,7 +66,7 @@ void Sphere::Draw()
   if (Renderer::isDrawingDebug)
   {
     glDisable(GL_DEPTH_TEST);
-    //generating BV verts
+    //generating BV verts - using localSpace as it is transformed by MVP in shader
     glm::vec3 minLS = body.lock()->boundingBox->getLocalMin();
     glm::vec3 extentLS = -minLS + (body.lock()->boundingBox->getLocalMax());
 

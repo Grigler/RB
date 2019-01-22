@@ -31,8 +31,8 @@ namespace RB
 
     glm::vec3 angularVelocity = glm::vec3(0.0f);
     glm::vec3 accumulatedTorque = glm::vec3(0.0f);
-    glm::mat3 ineritaTensor = glm::identity<glm::mat3>();
-    glm::mat3 invWorldInertiaTensor; //TODO
+    glm::mat3 inertiaTensor = glm::identity<glm::mat3>();
+    glm::mat3 invWorldInertiaTensor;
 
     //Helper functions
     glm::vec4 getPosition4() { return glm::vec4(position, 1); }
@@ -48,6 +48,12 @@ namespace RB
 
     std::shared_ptr<AABB> boundingBox;
     std::shared_ptr<GreedyCollider> collider;
+
+    //rotates local inertia tensor by orientation quat and inverses
+    void CalcWorldInvInertiaTensor();
+
+    //Calculates inertia tensor as body is a sphere of mass _radius
+    void CalcInertiaTensorSphere(float _radius);
 
     void kill();
 

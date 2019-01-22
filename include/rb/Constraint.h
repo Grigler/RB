@@ -20,9 +20,10 @@ namespace RB
     glm::vec3 worldPos;
     glm::vec3 normal;
     float penetrationDepth;
-    //TODO - RENAME
-    //Legacy variable from old code that I've never
-    //fully gotten my head around
+    
+    //variable that is equal to 1/jacobian_diagonal
+    //as this constraint is only for point constraint
+    //(for collisions), this is calculated with CalcJacM
     float jacDiagABInv;
 
     //To store impulse force applied across iterations
@@ -31,7 +32,9 @@ namespace RB
     std::shared_ptr<Body> l;
     std::shared_ptr<Body> r;
 
-    //Provides a value to jacDiagABInv from other member variables
+    //Provides a value to jacDiagABInv through calculating
+    //relevant jacobian diagonal for a collision formed
+    //point constraint
     void CalcJacM();
 
   private:
