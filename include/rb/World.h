@@ -35,6 +35,8 @@ namespace RB
 
     static std::unique_ptr<BVH> bvh;
 
+    static const float getFixedTimestep() { return fixedTimestep; }
+
   private:
     std::list< std::shared_ptr<Body> > bodies;
     std::vector<std::shared_ptr<Constraint>> constraints;

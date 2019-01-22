@@ -101,6 +101,9 @@ void World::Tick(float _dt)
 
     //Collision solving
     //Hand constraints ref to LCPFactory::Global
+    LCPFactory::getGlobalFunction()(constraints);
+    //TODO - CHECK IF THEY ARE SOLVED BEFORE CLEARING
+    constraints.clear();
 
     //Reducing accumulator by fixed timestep
     timeAccumulator -= fixedTimestep;
