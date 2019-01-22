@@ -24,16 +24,20 @@ GreedyCollider::GreedyCollider(glm::vec3 _halfExtents)
   halfExtents = _halfExtents;
 }
 
-//TODO
 std::shared_ptr<Constraint> GreedyCollider::SphereSphere(GreedyCollider &_l, GreedyCollider &_r)
 {
+  //Sanity check for collider types
+  if (_l.type != ColliderType::Sphere || _r.type != ColliderType::Sphere)
+  {
+    return std::shared_ptr<Constraint>();
+  }
+
+
   bool isColliding = true;
 
   float radSum = _l.radius + _r.radius;
   float distSqr = glm::distance2(_l.parent.lock()->position, _r.parent.lock()->position);
   isColliding = distSqr < radSum*radSum;
-
-  //Check for collision
 
   if (isColliding)
   {
