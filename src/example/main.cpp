@@ -47,6 +47,8 @@ int main(int argc, char **argv)
   sphereRight.lock()->body.lock()->applyTorqueImpulse(glm::vec3(0.0f,0.0f,-90.0f));
   sphereLeft.lock()->body.lock()->applyTorqueImpulse(glm::vec3(0.0f,0.0f,90.0f));
   
+
+
   //Used for pausing simulation with spacebar
   bool isUpdating = false;
 

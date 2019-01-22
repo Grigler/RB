@@ -84,18 +84,23 @@ void World::Tick(float _dt)
       auto lCol = cp->l.lock()->collider;
       auto rCol = cp->r.lock()->collider;
 
+      std::shared_ptr<Constraint> c;
+
       switch (lCol->type & rCol->type)
       {
-      case ColliderType::Sphere & ColliderType::Sphere:
+      case CollisionType::SphereSphere:
         
         //Sphere-Sphere collision only ever returns 1 contact
-        std::shared_ptr<Constraint> c = 
-          GreedyCollider::SphereSphere(*lCol, *rCol);
-        
-        //An empty shared_ptr means that there was no collision
-        if (c.use_count()) constraints.push_back(c);
+        c = GreedyCollider::SphereSphere(*lCol, *rCol);
+        break;
+      case CollisionType::SphereOBB:
+        c = GreedyCollider::SphereOBB(*lCol, *rCol);
         break;
       }
+
+      //An empty shared_ptr (i.e., use_count == 0)
+      //means that there was no collision
+      if (c.use_count()) constraints.push_back(c);
     }
 
 
