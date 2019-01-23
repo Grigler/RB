@@ -14,9 +14,9 @@ glm::mat4 Transform::getModelMat()
   glm::mat4 from = glm::mat4(1);
   glm::mat4 t = glm::translate(from, pos);
   glm::mat4 r = getRotationMat();
-  
-  //SCALE ASSUMED TO BE 1:1 TO GEOMETRY FOR EXAMPLE
-  return t * r;
+  glm::mat4 s = glm::scale(scale);
+
+  return t * r * s;
 }
 
 glm::mat4 Transform::getRotationMat()

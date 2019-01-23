@@ -19,15 +19,15 @@ namespace RB
   public:
     glm::vec3 worldPos;
     glm::vec3 normal;
-    float penetrationDepth;
+    float penetrationDepth = 0.0f;
     
     //variable that is equal to 1/jacobian_diagonal
     //as this constraint is only for point constraint
     //(for collisions), this is calculated with CalcJacM
-    float jacDiagABInv;
+    float jacDiagABInv = 0.0f;
 
     //To store impulse force applied across iterations
-    float appliedImpulse;
+    float appliedImpulse = 0.0f;
 
     std::shared_ptr<Body> l;
     std::shared_ptr<Body> r;

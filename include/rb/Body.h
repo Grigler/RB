@@ -26,8 +26,11 @@ namespace RB
 
     glm::vec3 linearVelocity = glm::vec3(0.0f);
     glm::vec3 accumulatedForce = glm::vec3(0.0f);
+    //DO NOT SET MANUALLY
     float mass = 1.0f;
     float invMass = 1.0f; //TODO
+    //Any value <= 0 is evaluated to be infinite mass
+    void SetMass(float _mass);
 
     glm::vec3 angularVelocity = glm::vec3(0.0f);
     glm::vec3 accumulatedTorque = glm::vec3(0.0f);
@@ -52,8 +55,10 @@ namespace RB
     //rotates local inertia tensor by orientation quat and inverses
     void CalcWorldInvInertiaTensor();
 
-    //Calculates inertia tensor as body is a sphere of mass _radius
+    //Calculates inertia tensor as if body is a sphere with _radius
     void CalcInertiaTensorSphere(float _radius);
+    //Calculates intertia tensor as if body is box with given halfExtents
+    void CalcInertiaTensorBox(glm::vec3 _halfExtents);
 
     void kill();
 

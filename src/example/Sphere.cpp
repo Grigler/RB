@@ -22,7 +22,10 @@ void Sphere::onCreation()
   }
 
   body.lock()->collider = std::make_unique<RB::GreedyCollider>(1.0f);
+  //body.lock()->collider = std::make_unique<RB::GreedyCollider>(glm::vec3(1.0f));
+  body.lock()->SetMass(1.0f);
   body.lock()->CalcInertiaTensorSphere(1.0f);
+
   body.lock()->collider->parent = body;
 }
 
@@ -65,7 +68,7 @@ void Sphere::Draw()
 
   if (Renderer::isDrawingDebug)
   {
-    glDisable(GL_DEPTH_TEST);
+    //glDisable(GL_DEPTH_TEST);
     //generating BV verts - using localSpace as it is transformed by MVP in shader
     glm::vec3 minLS = body.lock()->boundingBox->getLocalMin();
     glm::vec3 extentLS = -minLS + (body.lock()->boundingBox->getLocalMax());
@@ -124,6 +127,6 @@ void Sphere::Draw()
       //draw call
       bvVAO->draw();
     bvVAO->unbind();
-    glEnable(GL_DEPTH_TEST);
+    //glEnable(GL_DEPTH_TEST);
   }
 }

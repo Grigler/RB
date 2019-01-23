@@ -122,7 +122,7 @@ add_executable(example
   include/example/DrawObject.h
   
   include/example/Sphere.h
-  
+  include/example/Cube.h
   
   src/example/Renderer.cpp
   src/example/GameClock.cpp
@@ -133,6 +133,7 @@ add_executable(example
   src/example/DrawObject.cpp
 
   src/example/Sphere.cpp
+  src/example/Cube.cpp
   
   src/example/gl3w.c
 )

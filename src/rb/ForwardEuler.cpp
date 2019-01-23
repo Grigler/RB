@@ -19,8 +19,6 @@ void ForwardEuler::integrate(std::shared_ptr<RB::Body> _b, float _dt)
   //_b->orientation += glm::quat(_b->orientation * glm::vec4(_b->angularVelocity,1.0f) * _dt);
   _b->orientation = glm::quat(_b->angularVelocity*_dt) * _b->orientation + (_b->orientation*0.5f);  
   _b->orientation = glm::normalize(_b->orientation);
-  printf("O: %f, %f, %f, %f\n",
-    _b->orientation[0], _b->orientation[1], _b->orientation[2], _b->orientation[3]);
 
   //Updating worldInvInertiaTensor for the adjustment in orientation
   _b->CalcWorldInvInertiaTensor();

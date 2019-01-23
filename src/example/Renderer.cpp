@@ -29,8 +29,8 @@ void Renderer::Startup()
 
   SDL_GetDisplayBounds(0, &screenRect);
   //Manually setting to half screen size
-  screenRect.w /= 1.25f;
-  screenRect.h /= 1.25f;
+  screenRect.w /= 1.75f;
+  screenRect.h /= 1.75f;
 
   window = SDL_CreateWindow("RB",
     SDL_WINDOWPOS_CENTERED,
@@ -79,6 +79,9 @@ void Renderer::Startup()
   glClearColor(0.33f, 0.33f, 0.33f, 1.0f);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_MULTISAMPLE);
+  glEnable(GL_CULL_FACE);
+  glCullFace(GL_BACK);
+  //glFrontFace();
   //TODO - sort objects by distance to camera
   //Not sorting by distance from camera for simplicity
   //so expect depth occlusion issues

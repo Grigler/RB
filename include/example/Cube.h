@@ -1,11 +1,11 @@
-#ifndef SPHERE_H_
-#define SPHERE_H_
+#ifndef CUBE_H_
+#define CUBE_H_
 
 #include "Object.h"
 
 #include <ngl/VAOPrimitives.h>
 
-class Sphere : public Object
+class Cube : public Object
 {
 public:
 
@@ -17,7 +17,6 @@ public:
 
 private:
   static std::unique_ptr<ngl::AbstractVAO> bvVAO;
-
 };
 
 #endif

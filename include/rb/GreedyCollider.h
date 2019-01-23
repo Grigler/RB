@@ -2,6 +2,7 @@
 #define GREEDYCOLLIDER_H_
 
 #include <memory>
+#include <vector>
 
 #include <glm/vec3.hpp>
 
@@ -52,10 +53,15 @@ namespace RB
     //_l or _r can be either ColliderType::Sphere or ColliderType::OBB
     //as long as there is one of each in either paramater
     static std::shared_ptr<Constraint> SphereOBB(GreedyCollider &_l, GreedyCollider &_r);
+    //returns empty vector if no collision
+    static std::vector<std::shared_ptr<Constraint>> OBBOBB(GreedyCollider &_l, GreedyCollider &_r);
+
 
     std::weak_ptr<Body> parent;
   private:
-
+    //Using 2 OBBs and an arbitrary axis - returns interpenetration depth 
+    //(negative if there is no penetration)
+    static float PenetrationOnAxis(GreedyCollider &_l, GreedyCollider &_r, glm::vec3 _axis);
   };
 }
 

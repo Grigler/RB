@@ -67,7 +67,8 @@ void World::Tick(float _dt)
       //Reset collision flag - set in broadphase
       (*i)->boundingBox->collisionFlag = false;
       //Always uses global function from factory - user can set their own
-      IntegratorFactory::getGlobalFunction()(*i, fixedTimestep);
+      if((*i)->invMass > 0.0f)
+        IntegratorFactory::getGlobalFunction()(*i, fixedTimestep);
       //Updating bv for broadphase
       (*i)->boundingBox->Update((*i)->getModelMat());
     }
@@ -98,6 +99,7 @@ void World::Tick(float _dt)
         break;
       case CollisionType::OBBOBB:
         //Add some number of constraints to possibleCs
+        possibleCs = GreedyCollider::OBBOBB(*lCol, *rCol);
         break;
       }
       //Add constraints to World constraints vector

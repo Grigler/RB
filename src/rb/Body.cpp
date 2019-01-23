@@ -20,6 +20,20 @@ Body::Body(glm::vec3 _position, glm::quat _orientation,
   World::bvh.get()->AddAABB(boundingBox);
 }
 
+void Body::SetMass(float _mass)
+{
+  if (_mass <= 0.0f)
+  {
+    mass = 0.0f;
+    invMass = 0.0f;
+  }
+  else
+  {
+    mass = _mass;
+    invMass = 1.0f / mass;
+  }
+}
+
 glm::mat4 Body::getModelMat()
 {
   //Allows a hierarchy to be added easier in future
@@ -69,6 +83,20 @@ void Body::CalcInertiaTensorSphere(float _radius)
     inertiaTensor[i][i] = diag;
   }
   CalcWorldInvInertiaTensor();
+}
+void Body::CalcInertiaTensorBox(glm::vec3 _halfExtents)
+{
+  //Clearing out inertia tensor
+  inertiaTensor = glm::mat3(0.0f);
+  //doubling and squaring halfExtents for ease
+  for (int i = 0; i < 3; i++)
+    _halfExtents[i] = glm::pow(_halfExtents[i] * 2.0f, 2);
+
+  //Caching repeated value
+  float massRatio = (1.0f / 12.0f)*mass;
+  inertiaTensor[0][0] = massRatio * (_halfExtents.y + _halfExtents.z);
+  inertiaTensor[1][1] = massRatio * (_halfExtents.x + _halfExtents.z);
+  inertiaTensor[2][2] = massRatio * (_halfExtents.x + _halfExtents.y);
 }
 
 void Body::kill()
