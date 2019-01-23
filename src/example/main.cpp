@@ -21,7 +21,8 @@ int main(int argc, char **argv)
   Renderer::Startup();
 
   //Basic Scene Creation
-  Scene scene;
+  Scene *scene = Scene::instance();
+  
   /*
   for (size_t i = 0; i < 1; i++)
   {
@@ -29,17 +30,17 @@ int main(int argc, char **argv)
   }
   */
 
-  std::weak_ptr<Camera> camera = scene.AddObject<Camera>();
+  std::weak_ptr<Camera> camera = scene->AddObject<Camera>();
 
 
   //Setting up initial test collision - TEMPORARY
   std::weak_ptr<Sphere> sphereRight = 
-    scene.AddObject<Sphere>(glm::vec3(-8.0f, 5.8f, 15.0f), true);
+    scene->AddObject<Sphere>(glm::vec3(-8.0f, 5.8f, 15.0f), true);
   sphereRight.lock()->colour = glm::vec4(0.0f, 1.0f, 0.0f, 0.5f);
 
   
   std::weak_ptr<Sphere> sphereLeft =
-    scene.AddObject<Sphere>(glm::vec3(10.0f, 5.0f, 15.0f), true);
+    scene->AddObject<Sphere>(glm::vec3(10.0f, 5.0f, 15.0f), true);
   sphereLeft.lock()->colour = glm::vec4(1.0f, 0.0f, 0.0f, 0.5f);
   /*
   std::weak_ptr<Sphere> sphereLeft1 =
@@ -49,7 +50,7 @@ int main(int argc, char **argv)
   for (size_t i = 0; i < 100; i++)
   {
     std::weak_ptr<Sphere> sphere =
-      scene.AddObject<Sphere>(glm::vec3(8.0f, 5.0f*i, 15.0f), true);
+      scene->AddObject<Sphere>(glm::vec3(8.0f, 5.0f*i, 15.0f), true);
     float r = (rand() % 1000) / 1000.0f,
       g = (rand() % 1000) / 1000.0f,
       b = (rand() % 1000) / 1000.0f;
@@ -64,14 +65,14 @@ int main(int argc, char **argv)
   //sphereLeft.lock()->body.lock()->applyTorqueImpulse(glm::vec3(0.0f,0.0f,90.0f));
   
   std::weak_ptr<Cube> cube =
-    scene.AddObject<Cube>(glm::vec3(-8.0f, -2.0f, 15.0f), true);
+    scene->AddObject<Cube>(glm::vec3(-8.0f, -2.0f, 15.0f), true);
     //scene.AddObject<Cube>(glm::vec3(0.0f, 7.0f, -15.0f), true);
   cube.lock()->colour = glm::vec4(0.0f, 0.0f, 1.0f, 0.5f);
   cube.lock()->transform.scale = glm::vec3(2.0f);
   cube.lock()->body.lock()->SetMass(0.0f);
 
   std::weak_ptr<Cube> cube2 =
-    scene.AddObject<Cube>(glm::vec3(8.0f, -2.0f, 15.0f), true);
+    scene->AddObject<Cube>(glm::vec3(8.0f, -2.0f, 15.0f), true);
   //scene.AddObject<Cube>(glm::vec3(0.0f, 7.0f, -15.0f), true);
   cube2.lock()->colour = glm::vec4(0.0f, 0.0f, 1.0f, 0.5f);
   cube2.lock()->transform.scale = glm::vec3(2.0f);
@@ -108,19 +109,37 @@ int main(int argc, char **argv)
           sphereRight.lock()->colour.a -= 0.2f;
           cube.lock()->colour.a -= 0.2f;
           break;
+        case SDLK_a:
+          camera.lock()->RotateBy(glm::vec3(0, 2, 0));
+          break;
+        case SDLK_d:
+          camera.lock()->RotateBy(glm::vec3(0, -2, 0));
+          break;
+        case SDLK_w:
+          camera.lock()->RotateBy(glm::vec3(-2, 0, 0));
+          break;
+        case SDLK_s:
+          camera.lock()->RotateBy(glm::vec3(2, 0, 0));
+          break;
+        case SDLK_f:
+          camera.lock()->ShootCube(20.0f);
+          break;
+        case SDLK_h:
+          camera.lock()->ShootSphere(20.0f);
+          break;
         }
       }
     }
 
     //printf("fps: %3f\r", (1.0f/GameClock::dt));
 
-    if(isUpdating) scene.Update();
+    if(isUpdating) scene->Update();
     else GameClock::UpdateDT(); //should still update dt
 
     //render here
     Renderer::ClearBuffers();
     //Scene draw
-    scene.Draw();
+    scene->Draw();
     Renderer::SwapBuffers();
     
     //shitty vsync

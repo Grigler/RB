@@ -5,12 +5,13 @@
 #include <memory>
 #include <glm/vec3.hpp>
 
+#include <ngl/Singleton.h>
 
 namespace RB { class World; }
 
 class Object;
 
-class Scene
+class Scene : public ngl::Singleton<Scene>
 {
 public:
   
