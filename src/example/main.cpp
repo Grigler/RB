@@ -32,6 +32,14 @@ int main(int argc, char **argv)
   bottomWall->ResetColliderToScale();
   bottomWall->colour = { 0.8f,0.4f,0.8f,1.0f };  
 
+  std::shared_ptr<Cube> backWall = scene->AddObject<Cube>({ 0,5.0f,5.0f }, true).lock();
+  backWall->body.lock()->SetMass(0.0f);
+  backWall->body.lock()->orientation =
+    glm::toQuat(glm::rotate(glm::mat4(1), glm::radians(90.0f), glm::vec3(1,0,0)));
+  backWall->transform.scale = glm::vec3(10, 2, 10);
+  backWall->ResetColliderToScale();
+  backWall->colour = { 0.7f, 0.3f, 0.8f, 1.0f };
+
   //Used for pausing simulation with spacebar
   bool isUpdating = false;
 

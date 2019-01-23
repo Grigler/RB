@@ -6,6 +6,7 @@
 
 using namespace RB;
 
+//Most modern physics systems use 4 iterations
 size_t SISolver::iterations = 4;
 
 //TODO
