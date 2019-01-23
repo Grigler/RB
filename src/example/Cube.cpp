@@ -31,7 +31,6 @@ void Cube::onCreation()
 
   body.lock()->collider = std::make_unique<RB::GreedyCollider>(glm::vec3(1.0f));
   body.lock()->CalcInertiaTensorBox(glm::vec3(1.0f));
-  //body.lock()->SetMass(0.0f);
   body.lock()->collider->parent = body;
 }
 void Cube::Update()
@@ -39,37 +38,29 @@ void Cube::Update()
   //Retrieving body data
   transform.pos = body.lock()->position;
   transform.rot = body.lock()->getRotationEuler();
+  body.lock()->SetBVScale(transform.scale);
 }
 void Cube::Draw()
 {
   //get vao
-  ngl::AbstractVAO *vao = ngl::VAOPrimitives::instance()->getVAOFromName("sphere");
+  ngl::AbstractVAO *vao = ngl::VAOPrimitives::instance()->getVAOFromName(ngl::cube);
   //get and bind shader
   ngl::ShaderLib *shader = ngl::ShaderLib::instance();
   (*shader)["Basic"]->use();
 
   //bind vao
   vao->bind();
-  //use shader prog
-    //calc uniforms
-    //glm::mat4 mv = Camera::getV() * transform.getModelMat();
-  glm::mat4 mvp = Camera::getVP() * transform.getModelMat();
-
 
   //set uniforms
-  //shader->setUniform("MV", ngl::mv);
+  glm::mat4 mvp = Camera::getVP() * transform.getModelMat();
   shader->setUniformMatrix4fv("MVP", &mvp[0][0]);
+
   shader->setUniform("colour", colour.r, colour.g, colour.b, colour.a);
 
-  //shader->setUniform("normalMatrix",
-  //  glm::transpose(glm::inverse(transform.getModelMat())));
-
   //draw calls
-  //ngl::VAOPrimitives::instance()->getVAOFromName(ngl::cube)->draw();
-  ngl::VAOPrimitives::instance()->draw(ngl::cube);
+  vao->draw();
   
-  //unbind shader prog
-//unbind vao
+  //unbind vao
   vao->unbind();
 
   if (Renderer::isDrawingDebug)
@@ -135,4 +126,13 @@ void Cube::Draw()
     bvVAO->unbind();
     //glEnable(GL_DEPTH_TEST);
   }
+}
+
+void Cube::ResetColliderToScale()
+{
+  //divide by 2.0f because it's half-extents
+  glm::vec3 halfExtents = transform.scale / 2.0f;
+  body.lock()->collider = std::make_unique<RB::GreedyCollider>(halfExtents);
+  body.lock()->CalcInertiaTensorBox(halfExtents);
+  body.lock()->collider->parent = body;
 }

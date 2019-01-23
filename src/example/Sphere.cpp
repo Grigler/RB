@@ -34,6 +34,7 @@ void Sphere::Update()
   //Retrieving body data
   transform.pos = body.lock()->position;
   transform.rot = body.lock()->getRotationEuler();
+  body.lock()->SetBVScale(transform.scale);
 }
 
 void Sphere::Draw()

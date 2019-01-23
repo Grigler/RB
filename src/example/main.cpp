@@ -22,61 +22,15 @@ int main(int argc, char **argv)
 
   //Basic Scene Creation
   Scene *scene = Scene::instance();
-  
-  /*
-  for (size_t i = 0; i < 1; i++)
-  {
-    s.AddObject<Sphere>();
-  }
-  */
 
-  std::weak_ptr<Camera> camera = scene->AddObject<Camera>();
+  std::shared_ptr<Camera> camera = scene->AddObject<Camera>().lock();
+  camera->transform.pos = { 0.0f, 5.0f, -10.0f };
 
-
-  //Setting up initial test collision - TEMPORARY
-  std::weak_ptr<Sphere> sphereRight = 
-    scene->AddObject<Sphere>(glm::vec3(-8.0f, 5.8f, 15.0f), true);
-  sphereRight.lock()->colour = glm::vec4(0.0f, 1.0f, 0.0f, 0.5f);
-
-  
-  std::weak_ptr<Sphere> sphereLeft =
-    scene->AddObject<Sphere>(glm::vec3(10.0f, 5.0f, 15.0f), true);
-  sphereLeft.lock()->colour = glm::vec4(1.0f, 0.0f, 0.0f, 0.5f);
-  /*
-  std::weak_ptr<Sphere> sphereLeft1 =
-    scene.AddObject<Sphere>(glm::vec3(8.0f, 12.0f, -15.0f), true);
-  sphereLeft1.lock()->colour = glm::vec4(0.0f, 1.0f, 1.0f, 0.5f);
-  */
-  for (size_t i = 0; i < 100; i++)
-  {
-    std::weak_ptr<Sphere> sphere =
-      scene->AddObject<Sphere>(glm::vec3(8.0f, 5.0f*i, 15.0f), true);
-    float r = (rand() % 1000) / 1000.0f,
-      g = (rand() % 1000) / 1000.0f,
-      b = (rand() % 1000) / 1000.0f;
-    sphere.lock()->colour = glm::vec4(r, g, b, 0.5f);
-  }
-  //sphereLeft.lock()->body.lock()->orientation = glm::rotation
-
-  //sphereRight.lock()->body.lock()->applyForceImpulse(2.0f*glm::vec3(9.0f, 2.5f, 1.0f));
-  //sphereLeft.lock()->body.lock()->applyForceImpulse(2.0f*glm::vec3(-9.0f, 2.5f, 1.0f));
-  
-  //sphereRight.lock()->body.lock()->applyTorqueImpulse(glm::vec3(0.0f,0.0f,-90.0f));
-  //sphereLeft.lock()->body.lock()->applyTorqueImpulse(glm::vec3(0.0f,0.0f,90.0f));
-  
-  std::weak_ptr<Cube> cube =
-    scene->AddObject<Cube>(glm::vec3(-8.0f, -2.0f, 15.0f), true);
-    //scene.AddObject<Cube>(glm::vec3(0.0f, 7.0f, -15.0f), true);
-  cube.lock()->colour = glm::vec4(0.0f, 0.0f, 1.0f, 0.5f);
-  cube.lock()->transform.scale = glm::vec3(2.0f);
-  cube.lock()->body.lock()->SetMass(0.0f);
-
-  std::weak_ptr<Cube> cube2 =
-    scene->AddObject<Cube>(glm::vec3(8.0f, -2.0f, 15.0f), true);
-  //scene.AddObject<Cube>(glm::vec3(0.0f, 7.0f, -15.0f), true);
-  cube2.lock()->colour = glm::vec4(0.0f, 0.0f, 1.0f, 0.5f);
-  cube2.lock()->transform.scale = glm::vec3(2.0f);
-  cube2.lock()->body.lock()->SetMass(0.0f);
+  std::shared_ptr<Cube> bottomWall = scene->AddObject<Cube>({ 0,0,0 }, true).lock();
+  bottomWall->body.lock()->SetMass(0.0f);
+  bottomWall->transform.scale = glm::vec3(10.0f, 2.0f, 10.0f);
+  bottomWall->ResetColliderToScale();
+  bottomWall->colour = { 0.8f,0.4f,0.8f,1.0f };  
 
   //Used for pausing simulation with spacebar
   bool isUpdating = false;
@@ -99,33 +53,23 @@ int main(int argc, char **argv)
         case SDLK_ESCAPE: isRunning = false; break;
         case SDLK_SPACE: isUpdating = !isUpdating; break;
         case SDLK_BACKSPACE: Renderer::isDrawingDebug = !Renderer::isDrawingDebug; break;
-        case SDLK_EQUALS:
-          sphereLeft.lock()->colour.a += 0.2f;
-          sphereRight.lock()->colour.a += 0.2f;
-          cube.lock()->colour.a += 0.2f;
-          break;
-        case SDLK_MINUS:
-          sphereLeft.lock()->colour.a -= 0.2f;
-          sphereRight.lock()->colour.a -= 0.2f;
-          cube.lock()->colour.a -= 0.2f;
-          break;
         case SDLK_a:
-          camera.lock()->RotateBy(glm::vec3(0, 2, 0));
+          camera->RotateBy(glm::vec3(0, 2, 0));
           break;
         case SDLK_d:
-          camera.lock()->RotateBy(glm::vec3(0, -2, 0));
+          camera->RotateBy(glm::vec3(0, -2, 0));
           break;
         case SDLK_w:
-          camera.lock()->RotateBy(glm::vec3(-2, 0, 0));
+          camera->RotateBy(glm::vec3(-2, 0, 0));
           break;
         case SDLK_s:
-          camera.lock()->RotateBy(glm::vec3(2, 0, 0));
+          camera->RotateBy(glm::vec3(2, 0, 0));
           break;
         case SDLK_f:
-          camera.lock()->ShootCube(20.0f);
+          camera->ShootCube(20.0f);
           break;
         case SDLK_h:
-          camera.lock()->ShootSphere(20.0f);
+          camera->ShootSphere(20.0f);
           break;
         }
       }

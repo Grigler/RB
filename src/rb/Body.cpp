@@ -3,6 +3,8 @@
 #include <World.h>
 #include <BVH.h>
 
+#include <glm/gtx/transform.hpp>
+
 using namespace RB;
 
 Body::Body()
@@ -41,7 +43,7 @@ glm::mat4 Body::getModelMat()
   glm::mat4 t = glm::translate(from, position);
   glm::mat4 r = glm::toMat4(orientation);
   //Assuming now scale
-  return t * r;
+  return t * r * scaleBVMat;
 }
 
 void Body::applyForceImpulse(glm::vec3 _force)
@@ -97,6 +99,11 @@ void Body::CalcInertiaTensorBox(glm::vec3 _halfExtents)
   inertiaTensor[0][0] = massRatio * (_halfExtents.y + _halfExtents.z);
   inertiaTensor[1][1] = massRatio * (_halfExtents.x + _halfExtents.z);
   inertiaTensor[2][2] = massRatio * (_halfExtents.x + _halfExtents.y);
+}
+
+void Body::SetBVScale(glm::vec3 _scale)
+{
+  scaleBVMat = glm::scale(_scale);
 }
 
 void Body::kill()

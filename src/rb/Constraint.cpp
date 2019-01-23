@@ -17,7 +17,7 @@ void Constraint::CalcJacM()
 
   float jmj2 = r->invMass;
   float jmj3 = 0.0f;
-  if (jmj0 != 0.0f)
+  if (jmj3 != 0.0f)
   {
     glm::vec3 armR = glm::cross(worldPos - r->position, -normal);
     jmj3 = glm::dot(r->invWorldInertiaTensor * armR, armR);

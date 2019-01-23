@@ -60,13 +60,17 @@ namespace RB
     //Calculates intertia tensor as if body is box with given halfExtents
     void CalcInertiaTensorBox(glm::vec3 _halfExtents);
 
-    void kill();
+    void SetBVScale(glm::vec3 _scale);
 
+    void kill();
+       
   private:
     //Used to easily pass 
     std::weak_ptr<Body> selfRef;
     std::weak_ptr<Body> world;
 
+    //provided by implementation to scale BV
+    glm::mat4 scaleBVMat = glm::mat4(1);
   };
 
 }//RB namespace

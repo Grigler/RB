@@ -84,7 +84,6 @@ std::shared_ptr<Constraint> GreedyCollider::SphereOBB(GreedyCollider &_l, Greedy
 
   //Find closest point from sphere center to OBB surface
   glm::vec3 d = sphere.parent.lock()->position - obb.parent.lock()->position;
-  glm::vec3 point = obb.parent.lock()->position;
 
   //orienting world axis by OBB orientation to find new axis
   glm::mat3 r = obb.parent.lock()->getRotationMatrix3();
@@ -95,6 +94,8 @@ std::shared_ptr<Constraint> GreedyCollider::SphereOBB(GreedyCollider &_l, Greedy
     r * glm::vec3(0,0,1)
   };
 
+  //Starting from centre of OBB and projecting out
+  glm::vec3 point = obb.parent.lock()->position;
   for (int i = 0; i < 3; i++)
   {
     //Projecting d onto obb axis for distance
@@ -104,7 +105,7 @@ std::shared_ptr<Constraint> GreedyCollider::SphereOBB(GreedyCollider &_l, Greedy
 
   //Testing if it is within Distance2 of r*r
   glm::vec3 v = point - sphere.parent.lock()->position;
-  isColliding = (glm::dot(v, v) <= sphere.radius*sphere.radius);
+  isColliding = (glm::dot(v, v) < sphere.radius*sphere.radius);
 
   //Forming constraint or return empty shared_ptr<Constraint>
   if (isColliding)
