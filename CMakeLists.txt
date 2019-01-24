@@ -13,9 +13,12 @@ else()
   #endif()
 
   #set(CMAKE_CXX_FLAGS "-g -O0 -Wall -fprofile-arcs -ftest-coverage")
-  set(CMAKE_CXX_FLAGS "-g -O0 -Wall --coverage")
+  #set(CMAKE_CXX_FLAGS "-g -O0 -Wall --coverage")
   #set(CMAKE_CXX_FLAGS_RELEASE "-O3")
   
+  link_directories($ENV{HOME}/NGL/lib)
+  message(STATUS "Home is: $ENV{HOME}")
+
 endif()
 
 include(GNUInstallDirs)
@@ -89,7 +92,7 @@ fetch_googletest(
 
 if(NOT WIN32)
   #Just testing
-  set(CMAKE_CXX_FLAGS "-g -O0 -Wall --coverage")
+  #set(CMAKE_CXX_FLAGS "-g -O0 -Wall --coverage")
 endif()
 
 add_executable(tests
@@ -135,7 +138,7 @@ add_executable(example
   src/example/Sphere.cpp
   src/example/Cube.cpp
   
-  src/example/gl3w.c
+  #src/example/gl3w.c
 )
 
 target_include_directories(example PUBLIC
@@ -146,6 +149,7 @@ target_include_directories(example PUBLIC
 
 target_link_libraries(example rb SDL2 SDL2main optimized NGL)
 target_link_libraries(example debug NGLD)
+
 
 #Moving data directory into build directory for VS ease
 #file(COPY ${PROJECT_SOURCE_DIR}/data DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/data)

@@ -18,7 +18,7 @@ namespace RB
     OBB = 0b0010
   };
 
-  const enum CollisionType : unsigned char
+  enum CollisionType : unsigned char
   {
     SphereSphere = ColliderType::Sphere & ColliderType::Sphere,
     SphereOBB = ColliderType::Sphere & ColliderType::OBB,
