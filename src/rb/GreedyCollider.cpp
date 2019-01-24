@@ -49,8 +49,15 @@ std::shared_ptr<Constraint> GreedyCollider::SphereSphere(GreedyCollider &_l, Gre
     float dist = glm::sqrt(distSqr);
     glm::vec3 midLine = _l.parent.lock()->position - _r.parent.lock()->position;
     c->normal = midLine / dist;
-    c->worldPos = _l.parent.lock()->position + (midLine * 0.5f);
-    c->penetrationDepth = glm::dot(glm::vec3(radSum - dist), c->normal);
+    //c->worldPos = _l.parent.lock()->position + (midLine * 0.5f);
+    c->worldPos = 0.5f * (
+      _l.parent.lock()->position + _l.radius*c->normal +
+      _r.parent.lock()->position - _r.radius*c->normal
+    );
+    c->penetrationDepth = -glm::abs(glm::dot(glm::vec3(radSum - dist), c->normal));
+    //c->penetrationDepth = radSum - glm::length(midLine);
+    //printf("IPD:\t%f\n", c->penetrationDepth);
+    
     c->CalcJacM();
     return c;
   }
@@ -352,12 +359,12 @@ std::vector<std::shared_ptr<Constraint>> GreedyCollider::OBBOBB(GreedyCollider &
     }
   }
 
-  printf("isColliding: %i\n", isColliding);
+  //printf("isColliding: %i\n", isColliding);
   //Form constraints from bestAxis as no separating axis found
   if (isColliding)
   {
-    printf("\tD: %f\n\tA: %f, %f, %f\n\tF: %i\n", bestDistance,
-      bestAxis[0], bestAxis[1], bestAxis[2], caseFlag);
+    //printf("\tD: %f\n\tA: %f, %f, %f\n\tF: %i\n", bestDistance,
+    //  bestAxis[0], bestAxis[1], bestAxis[2], caseFlag);
   }
 
   return ret;

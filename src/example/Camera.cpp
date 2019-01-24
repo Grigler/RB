@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include "Sphere.h"
 #include "Cube.h"
+#include "KeyInput.h"
 
 #include <RB.h>
 
@@ -26,8 +27,6 @@ void Camera::onCreation()
 
 void Camera::Update()
 {
-  //DEBUG
-  //printf("Camera: %p\n", singleton);
 }
 
 glm::mat4 Camera::getVP()
@@ -65,16 +64,20 @@ void Camera::RotateBy(glm::vec3 _eulerDegrees)
 {
   transform.rot += glm::radians(_eulerDegrees);
 }
+void Camera::RotateBy(glm::vec2 _mouseXY)
+{
+  RotateBy(glm::vec3(_mouseXY.y*mouseSensitivity,-_mouseXY.x*mouseSensitivity,0.0f));
+}
 void Camera::MoveBy(glm::vec3 _deltaPosition)
 {
-  transform.pos += _deltaPosition;
+  transform.pos += _deltaPosition * moveSensitivity;
 }
 void Camera::LocalMoveBy(glm::vec3 _deltaPosition)
 {
   //translate _deltaPosition into LS
   glm::vec3 ls = transform.getRotationMat() * glm::vec4(_deltaPosition,1.0f);
   //Apply translation
-  transform.pos += ls;
+  transform.pos += ls * moveSensitivity;
 }
 
 void Camera::ShootSphere(float _fScale, float _mass, glm::vec3 _torque)
@@ -85,7 +88,8 @@ void Camera::ShootSphere(float _fScale, float _mass, glm::vec3 _torque)
     (rand() % 1000) / 1000.0f,
     (rand() % 1000) / 1000.0f,
     (rand() % 1000) / 1000.0f,
-    0.5f
+    //0.5f
+    1.0f
   );
   sphere->body.lock()->SetMass(_mass);
   glm::vec4 localAxisForward = transform.getRotationMat() * glm::vec4(0,0,1,1);
@@ -100,10 +104,36 @@ void Camera::ShootCube(float _fScale, float _mass, glm::vec3 _torque)
     (rand() % 1000) / 1000.0f,
     (rand() % 1000) / 1000.0f,
     (rand() % 1000) / 1000.0f,
-    0.5f
+    //0.5f
+    1.0f
   );
   cube->body.lock()->SetMass(_mass);
   glm::vec4 localAxisForward = transform.getRotationMat() * glm::vec4(0, 0, 1, 1);
   cube->body.lock()->applyForceImpulse(localAxisForward * _fScale);
   cube->body.lock()->applyTorqueImpulse(transform.getRotationMat() * glm::vec4(_torque, 1));
+}
+
+void Camera::UpdateMovement()
+{
+  //Accumulating relevant input and moving in local space
+  glm::vec3 moveVec = glm::vec3(0);
+  if(KeyInput::CheckKey(SDLK_w))
+  {
+    moveVec += glm::vec3(0,0,1);
+  }
+  if(KeyInput::CheckKey(SDLK_s))
+  {
+    moveVec += glm::vec3(0,0,-1);
+  }
+
+  if(KeyInput::CheckKey(SDLK_a))
+  {
+    moveVec += glm::vec3(1,0,0);
+  }
+  if(KeyInput::CheckKey(SDLK_d))
+  {
+    moveVec += glm::vec3(-1,0,0);
+  }
+  //Function accounts for movement scaling
+  LocalMoveBy(moveVec);
 }

@@ -16,8 +16,8 @@ else()
   #set(CMAKE_CXX_FLAGS "-g -O0 -Wall --coverage")
   #set(CMAKE_CXX_FLAGS_RELEASE "-O3")
   
+  #Used to link to the NGL lib location (assuming it is built to home/NGL/lib)
   link_directories($ENV{HOME}/NGL/lib)
-  message(STATUS "Home is: $ENV{HOME}")
 
 endif()
 
@@ -42,7 +42,6 @@ add_library(rb STATIC
   include/rb/Integrator.h
   include/rb/ForwardEuler.h
   include/rb/SemiImplicitEuler.h
-  include/rb/RK4.h
 
   include/rb/Constraint.h
   include/rb/LCPFactory.h
@@ -60,7 +59,6 @@ add_library(rb STATIC
   src/rb/IntegratorFactory.cpp
   src/rb/ForwardEuler.cpp
   src/rb/SemiImplicitEuler.cpp
-  src/rb/RK4.cpp
   
   src/rb/Constraint.cpp
   src/rb/LCPFactory.cpp
@@ -83,7 +81,7 @@ enable_testing()
 
 #Forces gtest to link to C runtime libraries statically
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-
+#Downloads gtest as part of the configuration steps
 include(cmake/googletest.cmake)
 fetch_googletest(
     ${PROJECT_SOURCE_DIR}/cmake
@@ -118,6 +116,7 @@ add_executable(example
 
   include/example/Renderer.h
   include/example/GameClock.h
+  include/example/KeyInput.h
   include/example/Transform.h
   include/example/Camera.h
   include/example/Scene.h
@@ -129,6 +128,7 @@ add_executable(example
   
   src/example/Renderer.cpp
   src/example/GameClock.cpp
+  src/example/KeyInput.cpp
   src/example/Scene.cpp
   src/example/Transform.cpp
   src/example/Camera.cpp
@@ -147,15 +147,25 @@ target_include_directories(example PUBLIC
   ${PROJECT_SOURCE_DIR}/include/example
 )
 
-target_link_libraries(example rb SDL2 SDL2main optimized NGL)
-target_link_libraries(example debug NGLD)
+target_link_libraries(example rb SDL2 SDL2main NGL)
+#target_link_libraries(example debug NGLD)
 
 
 #Moving data directory into build directory for VS ease
 #file(COPY ${PROJECT_SOURCE_DIR}/data DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/data)
-
-
+if(WIN32)
+message(STATUS 
+  "Copying data folder to ${CMAKE_BINARY_DIR}/data for VS ease of use"
+)
 add_custom_command(TARGET example PRE_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_directory
   ${PROJECT_SOURCE_DIR}/data ${CMAKE_BINARY_DIR}/data
+)
+endif()
+
+#Postbuild command to copy required data folder to build/bin for easy running
+message(STATUS "Copying data folder to ${CMAKE_BINARY_DIR}/bin/data")
+add_custom_command(TARGET example POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+  ${PROJECT_SOURCE_DIR}/data ${CMAKE_BINARY_DIR}/bin/data
 )

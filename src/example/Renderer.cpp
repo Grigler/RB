@@ -32,6 +32,9 @@ void Renderer::Startup()
   screenRect.w /= 1.75f;
   screenRect.h /= 1.75f;
 
+  //For relative motion data in mouse events
+  SDL_SetRelativeMouseMode(SDL_TRUE);
+
   window = SDL_CreateWindow("RB",
     SDL_WINDOWPOS_CENTERED,
     SDL_WINDOWPOS_CENTERED,

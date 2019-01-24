@@ -47,7 +47,7 @@ void SISolver::Solve(std::vector<std::shared_ptr<Constraint>> &_constraints)
       (*c)->appliedImpulse += lambda;
       
 
-
+      /*
       //calculating impulse forces and applying to velocity
       glm::vec3 linImpulseL = lambda * (*c)->normal * l->invMass;
       glm::vec3 linImpulseR = lambda * -(*c)->normal * r->invMass;
@@ -61,10 +61,10 @@ void SISolver::Solve(std::vector<std::shared_ptr<Constraint>> &_constraints)
       //applying angular
       l->angularVelocity += angImpulseL;
       r->angularVelocity += angImpulseR;
-      
+      */
       //TODO - use these functions once they actually add impulse at velocity level
-      //l->applyForceImpulseAtLocation((*c)->normal*lambda, (*c)->worldPos - l->position);
-      //r->applyForceImpulseAtLocation(-(*c)->normal*lambda, (*c)->worldPos - r->position);
+      l->applyForceImpulseAtLocation((*c)->normal*lambda, (*c)->worldPos);
+      r->applyForceImpulseAtLocation(-(*c)->normal*lambda, (*c)->worldPos);
     }
   }
 }

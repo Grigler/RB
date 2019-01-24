@@ -51,14 +51,18 @@ void Body::applyForceImpulse(glm::vec3 _force)
   accumulatedForce += _force;
 }
 void Body::applyForceImpulseAtLocation(
-  glm::vec3 _force, glm::vec3 _localLocation)
+  glm::vec3 _force, glm::vec3 _worldLocation)
 {
-  accumulatedForce += _force;
+  if(invMass == 0.0f) return;
+  
+  linearVelocity += _force * invMass;
+  angularVelocity +=
+   invWorldInertiaTensor * glm::cross(position - _worldLocation, _force);
 
-  glm::vec3 com = glm::vec3(0.0f);
-  //glm::vec3 arm = com - _localLocation;
-  //Location is given as local, so it _is_ the torque lever arm
-  accumulatedTorque += glm::cross(_localLocation, _force);
+  //accumulatedForce += _force;
+  //glm::vec3 com = glm::vec3(0.0f);
+  //glm::vec3 arm = position - _worldLocation;
+  //accumulatedTorque += glm::cross(_worldLocation, _force);
 }
 
 void Body::applyTorqueImpulse(glm::vec3 _torque)

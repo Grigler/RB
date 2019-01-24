@@ -28,7 +28,7 @@ namespace RB
     glm::vec3 accumulatedForce = glm::vec3(0.0f);
     //DO NOT SET MANUALLY
     float mass = 1.0f;
-    float invMass = 1.0f; //TODO
+    float invMass = 1.0f;
     //Any value <= 0 is evaluated to be infinite mass
     void SetMass(float _mass);
 
@@ -45,7 +45,7 @@ namespace RB
     glm::mat4 getModelMat();
 
     void applyForceImpulse(glm::vec3 _force);
-    void applyForceImpulseAtLocation(glm::vec3 _force, glm::vec3 _localLocation);
+    void applyForceImpulseAtLocation(glm::vec3 _force, glm::vec3 _worldLocation);
 
     void applyTorqueImpulse(glm::vec3 _torque);
 

@@ -17,6 +17,7 @@ public:
   //it's that or dirty casting in some of the renderer functions
   static float getScreenWidth() { return screenRect.w; }
   static float getScreenHeight() { return screenRect.h; }
+  static SDL_Window *getWindow() { return window; }
 
   static bool isDrawingDebug;
 

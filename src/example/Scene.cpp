@@ -20,14 +20,10 @@ Scene::~Scene()
 void Scene::Update()
 {
   GameClock::UpdateDT();
-
-  //TODO - look at the order of these two
-  //Physics tick (fixed timestep - could be multiple per update)
   
-  //TEMPORARY DEBUG COMMENTED OUT
   world->Tick(GameClock::dt);
 
-  //Objects tick - one per frame
+  //Objects tick - once per frame
   for (auto o = objects.begin(); o != objects.end(); o++)
   {
     (*o)->Update();
