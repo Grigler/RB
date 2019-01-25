@@ -20,9 +20,6 @@ void InitPlinko();
 
 int main(int argc, char **argv)
 {
-  NGL_UNUSED(argc);
-  NGL_UNUSED(argv);
-
   Renderer::Startup();
 
   //Basic Scene Creation
@@ -32,9 +29,27 @@ int main(int argc, char **argv)
   std::shared_ptr<Camera> camera = Scene::instance()->AddObject<Camera>().lock();
   camera->transform.pos = glm::vec3(0.0f, 0.0f, 0.0f);
 
-  InitPlinko();
-  camera->transform.pos = glm::vec3(10.0f, 0.0f, -10.0f);
-  //InitBoxScene();
+  if(argc > 1)
+  {
+    if(std::string(argv[1]) == std::string("box"))
+    {
+      InitBoxScene();
+      printf("Box Scene\n");
+      camera->transform.pos = glm::vec3(2.0f, 18.0f, -10.0f);
+    }
+    else
+    {
+      InitPlinko();
+      printf("Plinko Scene\n");
+      camera->transform.pos = glm::vec3(10.0f, 0.0f, -10.0f);
+    }
+  }
+  else
+  {
+    InitPlinko();
+    printf("No args - defaulting to Plink Scene\n");
+    camera->transform.pos = glm::vec3(10.0f, 0.0f, -10.0f);
+  }
 
   //Used for pausing simulation with spacebar
   bool isUpdating = true;
@@ -58,10 +73,18 @@ int main(int argc, char **argv)
         //Putting here to stop accidentally firing off multiple instances
         if(e.key.keysym.sym == SDLK_SPACE) isUpdating = !isUpdating;
         else if(e.key.keysym.sym == SDLK_f) camera->ShootSphere(100.0f,10.0f);
-        else if(e.key.keysym.sym == SDLK_g) camera->ShootCube(100.0f,10.0f);
+        //else if(e.key.keysym.sym == SDLK_g) camera->ShootCube(100.0f,10.0f); OBB-OBB collision not satisfacotry for this
         else if(e.key.keysym.sym == SDLK_BACKSPACE) Renderer::isDrawingDebug = !Renderer::isDrawingDebug;
-        else if(e.key.keysym.sym == SDLK_i){ RB::IntegratorFactory::setGlobal(RB::Integrators::ForwardEuler); printf("FE\n");}
-        else if(e.key.keysym.sym == SDLK_o) {RB::IntegratorFactory::setGlobal(RB::Integrators::SemiImplicitEuler);printf("SIE\n");}
+        else if(e.key.keysym.sym == SDLK_i)
+        { 
+          RB::IntegratorFactory::setGlobal(RB::Integrators::ForwardEuler);
+          printf("Integrator: %s\n", RB::Integrators::ForwardEuler);
+        }
+        else if(e.key.keysym.sym == SDLK_o) 
+        {
+          RB::IntegratorFactory::setGlobal(RB::Integrators::SemiImplicitEuler);
+          printf("Integrator: %s\n", RB::Integrators::SemiImplicitEuler);
+        }
         break;
       case SDL_KEYUP:
         KeyInput::RegisterKeyUp(e.key.keysym.sym);
@@ -78,7 +101,7 @@ int main(int argc, char **argv)
     //if(KeyInput::CheckKey(SDLK_SPACE)) 
     //printf("fps: %3f\r", (1.0f/GameClock::dt));
 
-    //This is called seperately so camera can move in "freezeframe"
+    //This is called seperately so camera can move in physics "freezeframe"
     camera->UpdateMovement();
 
     if(isUpdating) scene->Update();
@@ -101,6 +124,8 @@ int main(int argc, char **argv)
   return EXIT_SUCCESS;
 }
 
+//Both of these functions are horrendous init functions for defined testing scenes
+//abandon all hope ye who enter here
 void InitBoxScene()
 {
   Scene *scene = Scene::instance();

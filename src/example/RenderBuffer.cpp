@@ -161,7 +161,6 @@ void RenderBuffer::DrawToQuad()
   glUniform1i(glGetUniformLocation(shader->getProgramID("Gamma"), "texDepth"), 1);
 
   glDrawArrays(GL_TRIANGLES, 0, 6);
-    printf("Draw\n");
    /*
   ngl::ShaderLib *shader = ngl::ShaderLib::instance();
   (*shader)["Gamma"]->use();
