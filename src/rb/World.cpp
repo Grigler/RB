@@ -6,7 +6,6 @@
 #include <IntegratorFactory.h>
 #include <ForwardEuler.h>
 #include <SemiImplicitEuler.h>
-#include <RK4.h>
 
 #include <Constraint.h>
 
@@ -32,7 +31,6 @@ World::World()
   //World registers all default integrators on creation
   IntegratorFactory::registerFunc(Integrators::ForwardEuler, ForwardEuler::integrate);
   IntegratorFactory::registerFunc(Integrators::SemiImplicitEuler, SemiImplicitEuler::integrate);
-  IntegratorFactory::registerFunc(Integrators::RK4, RK4::integrate);
 
   //Sets ForwardEuler integrator as default
   IntegratorFactory::setGlobal(Integrators::ForwardEuler);

@@ -39,6 +39,9 @@ void Sphere::Update()
 
 void Sphere::Draw()
 {
+  //Early out to avoid blending issues
+  if(colour.a == 0.0f) return;
+
   //get vao
   ngl::AbstractVAO *vao = ngl::VAOPrimitives::instance()->getVAOFromName("sphere");
   //get and bind shader

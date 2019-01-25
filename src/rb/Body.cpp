@@ -48,13 +48,15 @@ glm::mat4 Body::getModelMat()
 
 void Body::applyForceImpulse(glm::vec3 _force)
 {
-  accumulatedForce += _force;
+  if(invMass == 0.0f) return;
+  
+  linearVelocity += _force * invMass;
 }
 void Body::applyForceImpulseAtLocation(
   glm::vec3 _force, glm::vec3 _worldLocation)
 {
   if(invMass == 0.0f) return;
-  
+
   linearVelocity += _force * invMass;
   angularVelocity +=
    invWorldInertiaTensor * glm::cross(position - _worldLocation, _force);

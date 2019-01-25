@@ -9,7 +9,6 @@
 #include "IntegratorFactory.h"
 #include "ForwardEuler.h"
 #include "SemiImplicitEuler.h"
-#include "RK4.h"
 
 #include "GreedyCollider.h"
 
