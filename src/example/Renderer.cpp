@@ -33,7 +33,7 @@ void Renderer::Startup()
   screenRect.h /= 1.75f;
 
   //For relative motion data in mouse events
-  SDL_SetRelativeMouseMode(SDL_TRUE);
+  //SDL_SetRelativeMouseMode(SDL_TRUE);
 
   window = SDL_CreateWindow("RB",
     SDL_WINDOWPOS_CENTERED,
@@ -88,8 +88,8 @@ void Renderer::Startup()
   //TODO - sort objects by distance to camera
   //Not sorting by distance from camera for simplicity
   //so expect depth occlusion issues
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  //glEnable(GL_BLEND);
+  //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   //Setting linewidth for debug rendering
   glLineWidth(4.0f);
   

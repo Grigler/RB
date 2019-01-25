@@ -11,6 +11,7 @@
 #include "Cube.h"
 #include "GameClock.h"
 #include "KeyInput.h"
+#include "SphereEmitter.h"
 
 #include <chrono>
 
@@ -68,9 +69,9 @@ int main(int argc, char **argv)
       case SDL_MOUSEMOTION:
         camera->RotateBy(glm::vec2(e.motion.xrel,e.motion.yrel));
 
-        SDL_WarpMouseInWindow(Renderer::getWindow(),
-         Renderer::getScreenWidth()/2,
-          Renderer::getScreenHeight()/2);
+        //SDL_WarpMouseInWindow(Renderer::getWindow(),
+        // Renderer::getScreenWidth()/2,
+        //  Renderer::getScreenHeight()/2);
         break;
       }
     }
@@ -163,7 +164,7 @@ void InitPlinko()
     {
       std::shared_ptr<Cube> c = Scene::instance()->AddObject<Cube>({0,0,0},true).lock();
       c->body.lock()->position = glm::vec3(x*5.0f+offset,y*5.0f,20.0f);
-      c->transform.scale = glm::vec3(1.5f,1.5f,1.0f);
+      c->transform.scale = glm::vec3(1.0f,1.5f,1.0f);
       //c->body.lock()->orientation =
       //  glm::toQuat(glm::rotate(glm::mat4(1),glm::radians(45.0f),glm::vec3(0,0,1)));
       c->body.lock()->SetMass(0.0f);
@@ -214,5 +215,5 @@ void InitPlinko()
   floor->ResetColliderToScale();
   floor->colour = glm::vec4(0.2f, 0.4f, 0.2f, 1.0f);
 
-  
+  Scene::instance()->AddObject<SphereEmitter>({6.0f,35.0f,20.0f});
 }

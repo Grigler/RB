@@ -48,7 +48,7 @@ std::shared_ptr<Constraint> GreedyCollider::SphereSphere(GreedyCollider &_l, Gre
     c->r = _r.parent.lock();
     float dist = glm::sqrt(distSqr);
     glm::vec3 midLine = _l.parent.lock()->position - _r.parent.lock()->position;
-    c->normal = midLine / dist;
+    c->normal = glm::normalize(midLine);
     //c->worldPos = _l.parent.lock()->position + (midLine * 0.5f);
     c->worldPos = 0.5f * (
       _l.parent.lock()->position + _l.radius*c->normal +

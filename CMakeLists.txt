@@ -125,6 +125,7 @@ add_executable(example
   
   include/example/Sphere.h
   include/example/Cube.h
+  include/example/SphereEmitter.h
   
   src/example/Renderer.cpp
   src/example/GameClock.cpp
@@ -137,6 +138,7 @@ add_executable(example
 
   src/example/Sphere.cpp
   src/example/Cube.cpp
+  src/example/SphereEmitter.cpp
   
   #src/example/gl3w.c
 )

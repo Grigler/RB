@@ -8,6 +8,7 @@ class GameClock
 public:
 
   static float dt;
+  static float elapsedT;
 
   static void UpdateDT();
 
