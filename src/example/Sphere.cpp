@@ -17,7 +17,7 @@ void Sphere::onCreation()
   //ngl::VAOPrimitives::createSphere("sphereobj", 1.0f, 4);
   if (ngl::VAOPrimitives::instance()->getVAOFromName("sphere") == nullptr)
   {
-    ngl::VAOPrimitives::instance()->createSphere("sphere", 1.0f, 64);
+    ngl::VAOPrimitives::instance()->createSphere("sphere", 1.0f, 50);
     bvVAO = ngl::VAOFactory::createVAO(ngl::simpleVAO, GL_LINES);
   }
 

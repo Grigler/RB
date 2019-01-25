@@ -115,6 +115,7 @@ add_executable(example
   src/example/main.cpp
 
   include/example/Renderer.h
+  include/example/RenderBuffer.h
   include/example/GameClock.h
   include/example/KeyInput.h
   include/example/Transform.h
@@ -128,6 +129,7 @@ add_executable(example
   include/example/SphereEmitter.h
   
   src/example/Renderer.cpp
+  src/example/RenderBuffer.cpp
   src/example/GameClock.cpp
   src/example/KeyInput.cpp
   src/example/Scene.cpp

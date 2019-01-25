@@ -9,11 +9,15 @@ SDL_Rect Renderer::screenRect;
 SDL_Window *Renderer::window;
 SDL_GLContext Renderer::glContext;
 
+RenderBuffer Renderer::renderbuffer;
+
 bool Renderer::isDrawingDebug = false;
 
 void Renderer::SwapBuffers()
 {
+  renderbuffer.DrawToQuad();
   SDL_GL_SwapWindow(window);
+  renderbuffer.Bind();
 }
 void Renderer::ClearBuffers()
 {
@@ -26,14 +30,14 @@ void Renderer::Startup()
   {
     sdlError("! Unable to init SDL2: ");
   }
-
+  
   SDL_GetDisplayBounds(0, &screenRect);
   //Manually setting to half screen size
   screenRect.w /= 1.75f;
   screenRect.h /= 1.75f;
 
   //For relative motion data in mouse events
-  //SDL_SetRelativeMouseMode(SDL_TRUE);
+  SDL_SetRelativeMouseMode(SDL_TRUE);
 
   window = SDL_CreateWindow("RB",
     SDL_WINDOWPOS_CENTERED,
@@ -82,8 +86,10 @@ void Renderer::Startup()
   glClearColor(0.33f, 0.33f, 0.33f, 1.0f);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_MULTISAMPLE);
-  glEnable(GL_CULL_FACE);
-  glCullFace(GL_BACK);
+  //Seemingly the normals on the ngl generated spheres are wrong in some way
+  //so backface culling results in inverted spheres
+  //glEnable(GL_CULL_FACE);
+  //glCullFace(GL_BACK);
   //glFrontFace();
   //TODO - sort objects by distance to camera
   //Not sorting by distance from camera for simplicity
@@ -131,9 +137,26 @@ void Renderer::Startup()
   shader->attachShaderToProgram("Basic", "BasicFragment");
 
   shader->linkProgramObject("Basic");
-  //!DEBUG
+  
+  //Creating Post-process gamma correction shader
+  shader->createShaderProgram("Gamma");
 
+  shader->attachShader("GammaVertex", ngl::ShaderType::VERTEX);
+  shader->attachShader("GammaFragment", ngl::ShaderType::FRAGMENT);
 
+  shader->loadShaderSource("GammaVertex", "data/shaders/GammaVertex.glsl");
+  shader->loadShaderSource("GammaFragment", "data/shaders/GammaFragment.glsl");
+
+  shader->compileShader("GammaVertex");
+  shader->compileShader("GammaFragment");
+
+  shader->attachShaderToProgram("Gamma", "GammaVertex");
+  shader->attachShaderToProgram("Gamma", "GammaFragment");
+
+  shader->linkProgramObject("Gamma");
+
+  renderbuffer.Init();
+  renderbuffer.Bind();
 }
 
 void Renderer::ShutDown()

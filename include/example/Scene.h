@@ -20,9 +20,7 @@ public:
 
   void Update();
   void Draw();
-#include <ngl/NGLInit.h>
-#include <ngl/ShaderLib.h>
-#include <ngl/VAOFactory.h>
+
   template<class T>
   std::weak_ptr<T> AddObject(glm::vec3 _pos = { 0,0,0 }, bool isRB = false);
 

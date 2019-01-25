@@ -4,6 +4,8 @@
 #include <sdl/SDL.h>
 #include <string>
 
+#include "RenderBuffer.h"
+
 class Renderer
 {
 public:
@@ -27,6 +29,8 @@ private:
   static SDL_GLContext glContext;
 
   static void sdlError(const std::string &_msg);
+
+  static RenderBuffer renderbuffer;
 };
 
 #endif
